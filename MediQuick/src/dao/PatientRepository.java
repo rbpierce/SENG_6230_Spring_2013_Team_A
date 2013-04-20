@@ -139,9 +139,9 @@ public class PatientRepository extends PersonRepository {
         return result;
     }
 
-    public static PatientRepository getPatient(int personId) {
+    public static Patient getPatient(int personId) {
 
-    	PatientRepository p1 = null;
+    	Patient p1 = null;
         ResultSet result = null;
         String sql = "SELECT * FROM patient WHERE personId=1";
 
@@ -150,7 +150,7 @@ public class PatientRepository extends PersonRepository {
             result = DB.executeQuery(sql);
 
             if (result.next()) {
-                p1 = new PatientRepository();
+                p1 = new Patient();
                 p1.setPersonId(result.getInt("person_id"));
                 p1.setLastVisit(result.getDate("last_visit"));
                 p1.setNextScheduledVisit(result.getDate("next_scheduled_visit"));

@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import domain.Nurse;
+
 public class NurseRepository extends PersonRepository{
 
     private int PersonId;
@@ -84,16 +86,16 @@ public class NurseRepository extends PersonRepository{
         return result;
     }
 
-    public static NurseRepository getNurse(int PersonId) {
+    public static Nurse getNurse(int PersonId) {
 
-        NurseRepository p1 = null;
+    	Nurse p1 = null;
         ResultSet result = null;
         String sql = "SELECT * FROM nurse where (personId = " + PersonId + ")";
 
         try {
             result = DB.executeQuery(sql);
             if (result.next()) {
-                p1 = new NurseRepository();
+                p1 = new Nurse();
                 p1.setPersonId(result.getInt("personId"));
                 p1.setHourly_rate(result.getFloat("hourly_rate"));
             } else {
@@ -101,9 +103,7 @@ public class NurseRepository extends PersonRepository{
                 return null;
             }
         } catch (SQLException e) {
-            System.out.println("Error Sql: " + e.getMessage());
-            System.out.println("SQLState: " + e.getSQLState());
-            System.out.println("ErrorCode: " + e.getErrorCode());
+            e.printStackTrace();
         } finally {
         }
 

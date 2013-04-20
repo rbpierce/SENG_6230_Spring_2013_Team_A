@@ -28,5 +28,11 @@
             <rtexprvalue>true</rtexprvalue>
             <type>java.lang.String</type>
 		</attribute>
+		<attribute>
+            <name>role</name>
+            <description>List of role user must have to see enclosed content. Comma delimited- only requires 1 matching role</description>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
 	</tag>
 </taglib>
