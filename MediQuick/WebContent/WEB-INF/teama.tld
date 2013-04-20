@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+    version="2.0">
+	<tlibversion>1.0</tlibversion>
+	<jspversion>2.0</jspversion>
+	<shortname>teama</shortname>
+    <uri>http://www.mediquik.com/taglibs/teama</uri>
+    <info>
+        Team A custom tags 
+    </info>
+
+	<tag>
+		<name>checkRole</name>
+		<tagclass>tag.CheckRole</tagclass>
+		<bodycontent>JSP</bodycontent>
+        <info>This tag shows or hides content based on a user's permissions</info>
+		<attribute>
+			<name>permission</name>
+            <description>Name of permission user must have to see enclosed content</description>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+		</attribute>
+		<attribute>
+			<name>noPermission</name>
+            <description>Name of permission user must NOT have to see enclosed content</description>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+		</attribute>
+	</tag>
+</taglib>
