@@ -11,7 +11,9 @@ import java.util.Date;
 import java.util.List;
 
 import domain.LabRequest;
+import domain.Nurse;
 import domain.Person;
+import domain.Physician;
 
 public class LabRequestRepository {
 
@@ -273,56 +275,10 @@ public class LabRequestRepository {
 
     public static List<LabRequest> getList() {
 
-        final List<LabRequest> LabRequestList = new ArrayList<LabRequest>();
-        LabRequest p1 = null;
-
-        ResultSet result = null;
+        List<LabRequest> LabRequestList = new ArrayList<LabRequest>();
         String sql = "SELECT * FROM lab_request ";
-
-        try {
-
-            result = DB.executeQuery(sql);
-
-            while (result.next()) {
-                p1 = new LabRequest();
-
-                p1.setId(result.getInt("id"));
-
-                p1.setLaboratoryId(result.getInt("laboratory_id"));
-
-                p1.setPatientId(result.getInt("patient_id"));
-
-                p1.setRequestingNurseId(result.getInt("requesting_nurse_id"));
-
-                p1.setNurseRequest_time(result.getDate("nurse_request_time"));
-
-                p1.setOrderingPhysicianId(result.getInt("ordering_physicianId"));
-
-                p1.setOrderPlaced(result.getString("order_placed"));
-
-                p1.setSpecimen_type(result.getString("specimen_type"));
-
-                p1.setSpecimen_collection_time(result.getDate("specimen_collection_time"));
-
-                p1.setSpecimen_number(result.getString("specimen_number"));
-
-                p1.setUrine_collection_start(result.getDate("urine_collection_start"));
-
-                p1.setUrine_collection_finish(result.getDate("urine_collection_finish"));
-
-                p1.setUrine_interval_in_minutes(result.getInt("urine_interval_in_minutes"));
-
-                p1.setUrine_volume_in_milliliters(result.getInt("urine_volume_in_milliliters"));
-
-                p1.setICD9CodeId(result.getInt("icd9_code_id"));
-                p1.setStatus(result.getString("status"));
-                LabRequestList.add(p1);
-
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-        }
+        ResultSet result = DB.executeQuery(sql);
+        LabRequestList = LabRequest.getAllFromResultSet(result);
 
         return LabRequestList;
     }
@@ -457,77 +413,31 @@ public class LabRequestRepository {
         return List;
     }
 
-    public static ArrayList<LabRequest> getTests_Patient(int PatientID) {
-        String sql = "SELECT * FROM lab_request WHERE(patient_id=" + PatientID + ")";
-        LabRequest p1 = null;
-        ArrayList<LabRequest> List = new ArrayList<LabRequest>();
-
-        try {
-            ResultSet result = DB.executeQuery(sql);
-
-            while (result.next()) {
-                p1 = new LabRequest();
-                p1.setId(result.getInt("id"));
-                p1.setLaboratoryId(result.getInt("laboratory_id"));
-                p1.setPatientId(result.getInt("patient_id"));
-                p1.setRequestingNurseId(result.getInt("requesting_nurse_id"));
-                p1.setNurseRequest_time(result.getDate("nurse_request_time"));
-                p1.setOrderingPhysicianId(result.getInt("ordering_physician_id"));
-                p1.setOrderPlaced(result.getString("order_placed"));
-                p1.setSpecimen_type(result.getString("specimen_type"));
-                p1.setSpecimen_collection_time(result.getDate("specimen_collection_time"));
-                p1.setSpecimen_number(result.getString("specimen_number"));
-                p1.setUrine_collection_start(result.getDate("urine_collection_start"));
-                p1.setUrine_collection_finish(result.getDate("urine_collection_finish"));
-                p1.setUrine_interval_in_minutes(result.getInt("urine_interval_in_minutes"));
-                p1.setUrine_volume_in_milliliters(result.getInt("urine_volume_in_milliliters"));
-                p1.setICD9CodeId(result.getInt("icd9_code_id"));
-                p1.setStatus(result.getString("status"));
-                List.add(p1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return List;
+    public static ArrayList<LabRequest> getTestsForPatient(int patientId) {
+        return getTestsForPatient(patientId, null);
     }
 
-	public static ArrayList<LabRequest> getRequestsOfLab(int labID) {
-		String sql = "SELECT * FROM lab_request WHERE(laboratory_id=" + labID + ")";
-        LabRequest p1 = null;
-        ArrayList<LabRequest> List = new ArrayList<LabRequest>();
-
-        try {
-            ResultSet result = DB.executeQuery(sql);
-
-            while (result.next()) {
-                p1 = new LabRequest();
-                p1.setStatus(result.getString("status"));
-                if(p1.getStatus().equals("WaitingForDoctor") || p1.getStatus().equals("Denied")) continue;
-                
-                p1.setId(result.getInt("id"));
-                p1.setLaboratoryId(result.getInt("laboratory_id"));
-                p1.setPatientId(result.getInt("patient_id"));
-                p1.setRequestingNurseId(result.getInt("requesting_nurse_id"));
-                p1.setNurseRequest_time(result.getDate("nurse_request_time"));
-                p1.setOrderingPhysicianId(result.getInt("ordering_physician_id"));
-                p1.setOrderPlaced(result.getString("order_placed"));
-                p1.setSpecimen_type(result.getString("specimen_type"));
-                p1.setSpecimen_collection_time(result.getDate("specimen_collection_time"));
-                p1.setSpecimen_number(result.getString("specimen_number"));
-                p1.setUrine_collection_start(result.getDate("urine_collection_start"));
-                p1.setUrine_collection_finish(result.getDate("urine_collection_finish"));
-                p1.setUrine_interval_in_minutes(result.getInt("urine_interval_in_minutes"));
-                p1.setUrine_volume_in_milliliters(result.getInt("urine_volume_in_milliliters"));
-                p1.setICD9CodeId(result.getInt("icd9_code_id"));
-                
-                List.add(p1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public static ArrayList<LabRequest> getTestsForPatient(int patientId, Boolean completed) {
+    	String sql = "";
+        if (completed==null) sql = "SELECT * FROM lab_request WHERE(patient_id=" + patientId + ")";
+        else {
+        	sql = 	"SELECT req.* FROM lab_request req left join lab_result res ON (req.id=res.lab_request_id) " + 
+        			"	WHERE patient_id=" + patientId + " AND res.id IS " + (completed?"NOT NULL":"NULL");
+        	
         }
+        ArrayList<LabRequest> patientsLabTests = new ArrayList<LabRequest>();
 
-        return List;
+        ResultSet result = DB.executeQuery(sql);
+        patientsLabTests = LabRequest.getAllFromResultSet(result);
+        return patientsLabTests;
+    }
+    
+	public static ArrayList<LabRequest> getRequestsOfLab(int labID) {
+		String sql = "SELECT * FROM lab_request WHERE(laboratory_id=" + labID + ") AND status NOT IN ('WaitingForDoctor','Denied')";
+        ArrayList<LabRequest> requestsOfLab = new ArrayList<LabRequest>();
+        ResultSet result = DB.executeQuery(sql);
+        requestsOfLab = LabRequest.getAllFromResultSet(result);
+        return requestsOfLab;
 	}
 
 	public static void updateStatus(int reqID, String Status) {
@@ -535,62 +445,33 @@ public class LabRequestRepository {
         sql = "update lab_request set `status`='" + Status + "' where id=" + String.valueOf(reqID) ;
 		DB.executeUpdate(sql);
 	}
-
-	public static ArrayList<Person> getPatientsOfDoctorByName(int DrID,	String patientFirstName, String patientLastName) {
-		String sql;
-		sql = "SELECT distinct(patient_id) FROM lab_request WHERE (ordering_physician_id=" + DrID + ")";
-	    ResultSet res = DB.executeQuery(sql);
-	    ArrayList<Person> List = new ArrayList<Person>();
-	    try {
-	    	while (res.next()) {
-	            Person p = Person.getById(res.getInt("patient_id"));
-	            if((patientFirstName!="") && patientFirstName.toLowerCase().equals(p.getFirstName().toLowerCase()))
-	            	List.add(p);
-	            else if((patientLastName!="") && patientLastName.toLowerCase().equals(p.getLastName().toLowerCase()))
-	            	List.add(p);
-	            else if(patientFirstName=="" && patientLastName=="")
-	            	List.add(p);
-	        }
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-
-	    return List;
-	}
-
 	
 	public static ArrayList<LabRequest> getRequestsWaitingForDoctor(int personID) {
-		ArrayList<LabRequest> List = new ArrayList<LabRequest>();
+		ArrayList<LabRequest> waitingForDoctor = new ArrayList<LabRequest>();
 		String sql = "SELECT * FROM lab_request WHERE (ordering_physician_id=" + personID + " AND status='WaitingForDoctor')";
-		LabRequest p1=null;
-		try {
-            ResultSet result = DB.executeQuery(sql);
+        ResultSet result = DB.executeQuery(sql);
+        waitingForDoctor = LabRequest.getAllFromResultSet(result);
 
-            while (result.next()) {
-                p1 = new LabRequest();
-                p1.setStatus(result.getString("status"));                
-                p1.setId(result.getInt("id"));
-                p1.setLaboratoryId(result.getInt("laboratory_id"));
-                p1.setPatientId(result.getInt("patient_id"));
-                p1.setRequestingNurseId(result.getInt("requesting_nurse_id"));
-                p1.setNurseRequest_time(result.getDate("nurse_request_time"));
-                p1.setOrderingPhysicianId(result.getInt("ordering_physician_id"));
-                p1.setOrderPlaced(result.getString("order_placed"));
-                p1.setSpecimen_type(result.getString("specimen_type"));
-                p1.setSpecimen_collection_time(result.getDate("specimen_collection_time"));
-                p1.setSpecimen_number(result.getString("specimen_number"));
-                p1.setUrine_collection_start(result.getDate("urine_collection_start"));
-                p1.setUrine_collection_finish(result.getDate("urine_collection_finish"));
-                p1.setUrine_interval_in_minutes(result.getInt("urine_interval_in_minutes"));
-                p1.setUrine_volume_in_milliliters(result.getInt("urine_volume_in_milliliters"));
-                p1.setICD9CodeId(result.getInt("icd9_code_id"));
-                
-                List.add(p1);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-		return List;
+		return waitingForDoctor;
 	}
+	
+	public static ArrayList<LabRequest> getRequestsAwaitingResults(Physician physician) { 
+		ArrayList<LabRequest> requestAwaitingResults = new ArrayList<LabRequest>();
+		String sql = 	"SELECT * FROM lab_request req LEFT JOIN lab_result res ON req.id=res.lab_request_id" + 
+						"	WHERE req.ordering_physician_id=" + physician.getId() + " AND res.id IS NULL";
+        ResultSet result = DB.executeQuery(sql);
+        requestAwaitingResults = LabRequest.getAllFromResultSet(result);
+		return requestAwaitingResults;
+	}
+	
+	public static ArrayList<LabRequest> getRequestsAwaitingPhysicianApproval(Nurse nurse) { 
+		if (nurse == null) return null;
+		ArrayList<LabRequest> requestAwaitingApproval = new ArrayList<LabRequest>();
+		String sql = 	"SELECT * FROM lab_request req" +
+						"	WHERE req.requesting_nurse_id=" + nurse.getId() + " AND ordering_physician_id IS NULL";
+        ResultSet result = DB.executeQuery(sql);
+        requestAwaitingApproval = LabRequest.getAllFromResultSet(result);
+		return requestAwaitingApproval;
+	}	
+	
 }

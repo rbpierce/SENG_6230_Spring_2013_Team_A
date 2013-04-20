@@ -59,24 +59,13 @@ public class LabTest extends LabTestRepository{
 
     }
 
-    public static  ArrayList<Person> getListOfPatients(int DrID) {
-        ArrayList<Person> Patients = LabRequestRepository.getPatientsOfDoctor(DrID);
-        return Patients;
-    }
-    
-    public static ArrayList<Person> getListofPatientsByName(int DrID, String PatientFirstName, String PatientLastName)
-    {
-    	ArrayList<Person> Patients = LabRequestRepository.getPatientsOfDoctorByName(DrID, PatientFirstName, PatientLastName);
-    	return Patients;
-    }
-
     public static ArrayList<LabRequest> getListOfTests_DoctorAndPatient(int PatientID, int DrID) {
         ArrayList<LabRequest> Tests = LabRequestRepository.getTests_DoctorAndPatient(PatientID, DrID);
         return Tests;
     }
 
     public static ArrayList<LabRequest> getListOfTests_Patient(int PatientID) {
-        ArrayList<LabRequest> Tests = LabRequestRepository.getTests_Patient(PatientID);
+        ArrayList<LabRequest> Tests = LabRequestRepository.getTestsForPatient(PatientID);
         return Tests;
     }
 
