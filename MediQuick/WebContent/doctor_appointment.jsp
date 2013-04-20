@@ -4,6 +4,7 @@
 
 <%
     ArrayList<Physician> doctors = Physician.getPhysicianList();
+//TEST
 %>
 
 <html>
