@@ -17,9 +17,101 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Patient Overview</title>
+    
+<style>
+    
+    body {
+        text-align: center;
+        background-color: #dedede;
+        margin: 0px;
+    }
+    #container{
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: left;
+        background-color: #ffffff;
+        padding: 20px;
+        border-left: 1px solid #000000;
+        border-right: 1px solid #000000;
+        border-bottom: 1px solid #000000;
+    }
+    h3, h4 {
+        margin-top: 0px;
+        padding-top: 0px;    
+    }
+
+    .width300 { width: 300px; }
+    
+    td { 
+        vertical-align: top;
+        padding: 3px;
+    
+    }
+    
+    td.label { 
+        font-weight: bold; 
+        text-align: right; 
+    }
+    
+    th { 
+        background-color: #cccccc;
+        border-bottom: 1px solid #000000;
+        padding: 0px;
+    }
+    table { 
+        padding: 0px; 
+        margin: 0px;
+        border-spacing:0;
+        border-collapse:collapse;
+    }
+    table.border { 
+        border: 1px solid #000000;
+        overflow: auto;
+    }
+    
+    .button {
+	    font-family: Arial, Helvetica, sans-serif;
+	    font-size: 14px;
+	    color: #ffffff;
+	    padding: 10px 20px;
+	    background: -moz-linear-gradient(
+	        top,
+	        #a3a3a3 0%,
+	        #3b3b3b 50%,
+	        #242424 50%,
+	        #000000);
+	    background: -webkit-gradient(
+	        linear, left top, left bottom, 
+	        from(#a3a3a3),
+	        color-stop(0.50, #3b3b3b),
+	        color-stop(0.50, #242424),
+	        to(#000000));
+	    -moz-border-radius: 10px;
+	    -webkit-border-radius: 10px;
+	    border-radius: 10px;
+	    border: 1px solid #000000;
+	    -moz-box-shadow:
+	        0px 1px 3px rgba(000,000,000,0.5),
+	        inset 0px 0px 1px rgba(255,255,255,0.6);
+	    -webkit-box-shadow:
+	        0px 1px 3px rgba(000,000,000,0.5),
+	        inset 0px 0px 1px rgba(255,255,255,0.6);
+	    box-shadow:
+	        0px 1px 3px rgba(000,000,000,0.5),
+	        inset 0px 0px 1px rgba(255,255,255,0.6);
+	    text-shadow:
+	        0px -1px 0px rgba(000,000,000,1),
+	        0px 1px 0px rgba(255,255,255,0.2);
+	    text-decoration: none;
+	}
+    
+    </style>
+    
     </head>
 <body>
 
+    <div id="container">
 	<teama:checkRole permission="VIEW_SUMMARY_PATIENT_DEMOGRAPHICS,VIEW_COMPLETE_PATIENT_DEMOGRAPHICS">
 		<h4>Patient Overview: <%= patient.getDisplayName() %></h4>
 
@@ -31,9 +123,9 @@
 
         <table>
             <tr>
-                <td>
+                <td style="padding-right: 40px">
                     <form method="POST" action="#">
-                    <table>
+                    <table class="width300 border">
                         <tr>
                             <th colspan="2">GENERAL INFO</th>
                         </tr>
@@ -128,12 +220,13 @@
                         </tr>                       
                         
                     </table>
+                    <button class="button" style="margin-top: 10px;" type='submit'> Save </button>
                     </form>
                 </td>
                 <td>
                 <!--  Test Pane -->
-                    <div><a href="#" class="button">Order New Test</a></div>
-                    <table>
+                    <div><button href="#" class="button" style="margin-bottom: 10px;" onClick="document.location='somewhere'">Order New Test</button></div>
+                    <table class="width300 border">
                         <tr>
                             <th>Test Ordered</th>
                             <th>Test Type</th>
@@ -161,5 +254,7 @@
 	<teama:checkRole noPermission="VIEW_SUMMARY_PATIENT_DEMOGRAPHICS,VIEW_COMPLETE_PATIENT_DEMOGRAPHICS">
 	   YOU DO NOT HAVE PERMISSION TO VIEW THIS PAGE	
 	</teama:checkRole>
+	</div>
+	
 </body>
 </html>
