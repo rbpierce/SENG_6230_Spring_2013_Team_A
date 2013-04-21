@@ -15,23 +15,38 @@ public class Person extends PersonRepository {
         return false;
     }
     
+    public boolean isPhysician() { 
+    	return this.getMemberType().equals(MemberType.PHYSICIAN.name());
+    }
+    public boolean isNurse() { 
+    	return this.getMemberType().equals(MemberType.NURSE.name());
+    }
+    public boolean isPatient() { 
+    	return this.getMemberType().equals(MemberType.PATIENT.name());
+    }
+    public boolean isTechnician() { 
+    	return this.getMemberType().equals(MemberType.TECHNICIAN.name());
+    }
+    public boolean isAdmin() { 
+    	return this.getMemberType().equals(MemberType.ADMIN.name());
+    }
     public Physician getPhysician() { 
-    	if (this.getRole().getName().equals(Role.PHYSICIAN)) return PhysicianRepository.getPhysician(this.getId());
+    	if (this.isPhysician()) return PhysicianRepository.getPhysician(this.getId());
     	else return null;
     }
     
     public Nurse getNurse() { 
-    	if (this.getRole().getName().equals(Role.NURSE)) return NurseRepository.getNurse(this.getId());
+    	if (this.isNurse()) return NurseRepository.getNurse(this.getId());
     	else return null;
     }
     
     public Patient getPatient() { 
-    	if (this.getRole().getName().equals(Role.PATIENT)) return PatientRepository.getPatient(this.getId());
+    	if (this.isPatient()) return PatientRepository.getPatient(this.getId());
     	else return null;
     }
     
     public Technician getTechnician() { 
-    	if (this.getRole().getName().equals(Role.TECHNICIAN)) return LabTechnicianRepository.getLabTechnician(this.getId());
+    	if (this.isTechnician()) return LabTechnicianRepository.getLabTechnician(this.getId());
     	else return null;
     }
 

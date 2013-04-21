@@ -67,7 +67,7 @@ public class LabRequest extends LabRequestRepository {
 				labRequest.setRequestingNurseId(rs.getInt("requesting_nurse_id"));
 				labRequest.setNurseRequest_time(rs.getDate("nurse_request_time"));
 				labRequest.setOrderingPhysicianId(rs.getInt("ordering_physician_id"));
-				labRequest.setOrderPlaced(rs.getString("order_placed"));
+				labRequest.setOrderPlaced(rs.getDate("order_placed"));
 				labRequest.setSpecimen_type(rs.getString("specimen_type"));
 				labRequest.setSpecimen_collection_time(rs.getDate("specimen_collection_time"));
 				labRequest.setSpecimen_number(rs.getString("specimen_number"));
@@ -97,7 +97,7 @@ public class LabRequest extends LabRequestRepository {
 				labRequest.setRequestingNurseId(rs.getInt("requesting_nurse_id"));
 				labRequest.setNurseRequest_time(rs.getDate("nurse_request_time"));
 				labRequest.setOrderingPhysicianId(rs.getInt("ordering_physician_id"));
-				labRequest.setOrderPlaced(rs.getString("order_placed"));
+				labRequest.setOrderPlaced(rs.getDate("order_placed"));
 				labRequest.setSpecimen_type(rs.getString("specimen_type"));
 				labRequest.setSpecimen_collection_time(rs.getDate("specimen_collection_time"));
 				labRequest.setSpecimen_number(rs.getString("specimen_number"));

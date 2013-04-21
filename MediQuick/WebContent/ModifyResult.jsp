@@ -20,9 +20,13 @@
 <% String message = "Please modify the result and click on Submit";	%>
 	<h3><%=message %></h3>
 
-	<%if(person.getMember_type().equals("physician")){ %>
+	<%
+		if(person.getMemberType().equals("physician")){
+	%>
 	<a href="/MediQuick/ViewPatientsServlet">Cancel</a>
-	<%}else if(person.getMember_type().equals("TECHNICIAN")){ %>
+	<%
+		}else if(person.getMemberType().equals("TECHNICIAN")){
+	%>
 	<a href="/MediQuick/ViewLabRequests">Cancel</a>
 	<%} %>
 	

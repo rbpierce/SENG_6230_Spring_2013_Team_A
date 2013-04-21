@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import javax.servlet.jsp.tagext.TagSupport;
 
+import domain.Permission;
 import domain.Person;
 
 /* If person (logged in user) has the permission passed into the tag, allow enclosed content to be displayed
@@ -26,17 +27,16 @@ import domain.Person;
 
 public class CheckRole extends TagSupport {
 
-    private String _permission = null;
-    private String _noPermission = null;
-    
+    private  ArrayList<String> _permission =  new ArrayList<String>();
+    private  ArrayList<String> _noPermission =  new ArrayList<String>();
     private ArrayList<String> _roleList = new ArrayList<String>();
 
     public void setPermission(String permission) {
-       this._permission = permission;
+       this._permission =  new ArrayList<String>(Arrays.asList(permission.split(",")));
     }
     
     public void setNoPermission(String noPermission) { 
-        this._noPermission = noPermission;
+        this._noPermission =  new ArrayList<String>(Arrays.asList(noPermission.split(",")));
     }
 
     public void setRole(String role) {
@@ -49,20 +49,22 @@ public class CheckRole extends TagSupport {
         if (person != null) {
         	boolean satisfiesRole = false;
         	if (this._roleList.isEmpty() || this._roleList.contains(person.getRole().getName())) satisfiesRole = true;
-            if (_permission!=null) { 
-                if (person.hasPermission(this._permission) && satisfiesRole) {
-                    return EVAL_BODY_INCLUDE;
-                } else {
-                    return SKIP_BODY;
-                }
-            } else if (this._noPermission!=null) { 
-            	System.out.println("NOT person.hasPermission(" + this._noPermission + ")?" + person.hasPermission(this._permission) + "  satisfiesRole? " + satisfiesRole);
-
-                if (!person.hasPermission(this._noPermission) && satisfiesRole) {
-                    return EVAL_BODY_INCLUDE;
-                } else {
-                    return SKIP_BODY;
-                }
+            if (!_permission.isEmpty() && satisfiesRole) { 
+            	for (String perm : _permission) { 
+            		//only require 1 match
+	                if (person.hasPermission(perm) ) {
+	                    return EVAL_BODY_INCLUDE;
+	                } 
+            	}            	
+                return SKIP_BODY;
+            } else if (!this._noPermission.isEmpty() && satisfiesRole) { 
+            	for (String perm : _noPermission) { 
+            		//if has even one, skip
+	                if (person.hasPermission(perm) ) {
+	                    return SKIP_BODY;
+	                } 
+            	}
+                return EVAL_BODY_INCLUDE;
             } 
             else { 
             	if (satisfiesRole) return EVAL_BODY_INCLUDE;
@@ -74,8 +76,8 @@ public class CheckRole extends TagSupport {
 
     @Override
     public void release() {
-    	this._permission = null;
-        this._noPermission = null;
+    	this._permission = new ArrayList<String>();
+        this._noPermission = new ArrayList<String>();
         this._roleList = new ArrayList<String>();
         super.release();
     }

@@ -39,7 +39,7 @@ public class Patient extends PatientRepository {
 	public static ArrayList<Person> search(Physician physicianHasOrderedTests, String firstName, String lastName) {
 		String sql = "SELECT p.id FROM person p ";
 		if (physicianHasOrderedTests!=null) sql += " LEFT JOIN lab_request r ON p.ordering_physician_id=" + physicianHasOrderedTests.getId() + ")";
-		sql += " WHERE p.first_name LIKE CONCAT(?,'%') AND p.last_name LIKE CONCAT(?,'%') AND p.is_active=1 ";
+		sql += " WHERE p.first_name LIKE CONCAT(?,'%') AND p.last_name LIKE CONCAT(?,'%') AND p.is_active=1 AND p.member_type='PATIENT' ";
 		if (physicianHasOrderedTests!=null) sql += " AND r.id IS NOT NULL ";
 		sql += " ORDER BY p.last_name, p.first_name";
 	    ArrayList<Person> matchingPatients = new ArrayList<Person>();

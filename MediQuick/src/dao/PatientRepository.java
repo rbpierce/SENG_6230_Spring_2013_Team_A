@@ -114,7 +114,7 @@ public class PatientRepository extends PersonRepository {
         PatientRepository p1 = null;
 
         ResultSet result = null;
-        String sql = "select * from patient join person where (person.member_type='PATIENT' AND person.id=patient.personId) ";
+        String sql = "select * from patient join person where (person.member_type='PATIENT' AND person.id=patient.person_id) ";
 
         try {
 
@@ -143,7 +143,7 @@ public class PatientRepository extends PersonRepository {
 
     	Patient p1 = null;
         ResultSet result = null;
-        String sql = "SELECT * FROM patient WHERE personId=1";
+        String sql = "SELECT * FROM patient WHERE person_id=1";
 
         try {
 

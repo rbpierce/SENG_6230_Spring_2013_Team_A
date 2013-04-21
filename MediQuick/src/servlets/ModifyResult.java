@@ -36,7 +36,7 @@ public class ModifyResult extends HttpServlet {
         HttpSession session = request.getSession();
         domain.Person p = (Person) session.getAttribute("person");
         
-        if(p.getMember_type().equals("TECHNICIAN")) forward="/ViewLabRequests";
+        if(p.getMemberType().equals("TECHNICIAN")) forward="/ViewLabRequests";
         
         try {
         	int resultID = Integer.parseInt(request.getParameter("ResID"));
