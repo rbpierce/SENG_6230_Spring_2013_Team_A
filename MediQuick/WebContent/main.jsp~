@@ -63,22 +63,11 @@
 			<% } %>
 	</div>
 	-->
-
-    <teama:checkRole permission="doctor_appointment.jsp">
-	   <a href="/MediQuick/doctor_appointment.jsp">Make a doctor appointment here</a>	   
-    </teama:checkRole>
-    <teama:checkRole permission="/MediQuick/ViewPatientsServlet">
-	   <a href="/MediQuick/ViewPatients.jsp">See the list of your patients</a><br />	   
-    </teama:checkRole>
-    <teama:checkRole permission="ViewTests.jsp">
-	   <a href="/MediQuick/ViewTests.jsp">See the list of your tests</a><br /> 
-    </teama:checkRole>
-    <teama:checkRole permission="/MediQuick/ViewLabRequests">
-	   <a href="/MediQuick/ViewRequests.jsp">See the list of requests sent to this lab</a><br />
-    </teama:checkRole>
-    <teama:checkRole permission="SEARCH_PATIENTS">
+	
+	<teama:checkRole permission="SEARCH_PATIENTS">
 	   <a href="/MediQuick/viewSearchPatients.jsp">Search For Patients</a>	   
     </teama:checkRole>
+	
 	
   </body>
 </html>
