@@ -31,9 +31,7 @@ public class LabTest extends LabTestRepository{
 
         // today's date
         java.util.Date dt = new java.util.Date();
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String currentTime = sdf.format(dt);
-        Request.setOrderPlaced(currentTime);
+        Request.setOrderPlaced(dt);
         Request.setRequestingNurseId(requestingNurseID);
         Request.setOrderingPhysicianId(DrID);
         Request.setPatientId(PatientID);

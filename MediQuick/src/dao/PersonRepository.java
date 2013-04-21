@@ -36,7 +36,7 @@ public class PersonRepository {
         this.Id = id;
     }
 
-    public String getMember_type() {
+    public String getMemberType() {
         return _memberType;
     }
 
@@ -166,7 +166,7 @@ public class PersonRepository {
     	Person person = Person.getById(personID);
     	
     	PersonRepository p = null;
-        String MemType = person.getMember_type().toUpperCase();
+        String MemType = person.getMemberType().toUpperCase();
         
         if(MemType.equals("PHYSICIAN"))	
         	p = new Physician();
@@ -199,7 +199,7 @@ public class PersonRepository {
                 .concat(" insert into Person (`member_type`,`first_name`,`middle_name`,`last_name`,`maiden_name`,`suffix`,`gender`,`marital_status`,`birth_date`,`is_test`,`is_active`,`username`,`password_plaintext`,`is_password_reset_required`)");
         sql = sql.concat(" values (");
 
-        sql = sql.concat(objPerson.getMember_type() + " ,");
+        sql = sql.concat(objPerson.getMemberType() + " ,");
         sql = sql.concat(objPerson.getFirstName() + " ,");
         sql = sql.concat(objPerson.getMiddleName() + " ,");
         sql = sql.concat(objPerson.getLastName() + " ,");
@@ -222,7 +222,7 @@ public class PersonRepository {
         String sql = "";
         sql = sql.concat(" update Person set ");
 
-        sql = sql.concat("`member_type`=" + objPerson.getMember_type() + " ,");
+        sql = sql.concat("`member_type`=" + objPerson.getMemberType() + " ,");
         sql = sql.concat("`first_name`=" + objPerson.getFirstName() + " ,");
         sql = sql.concat("`middle_name`=" + objPerson.getMiddleName() + " ,");
         sql = sql.concat("`last_name`=" + objPerson.getLastName() + " ,");
@@ -257,10 +257,14 @@ public class PersonRepository {
         PersonRepository temp = PersonRepository.getById(id);
         return temp.getFirstName() + " " + temp.getLastName();
     }
+    
+    public String getDisplayName() { 
+    	return getFirstName() + " " + getLastName();
+    }
 
     public static Person getById(int id) {
 
-        Person p1 = null;
+    	Person p1 = null;
         ResultSet result = null;
         String sql = "SELECT * FROM person where (id = " + id + ")";
 
@@ -287,7 +291,7 @@ public class PersonRepository {
                 p1.setIsPasswordResetRequired(result.getBoolean("is_password_reset_required"));
 
             } else {
-                System.out.println("No person found!");
+                System.out.println("No  found!");
                 return null;
             }
         } catch (SQLException e) {
@@ -346,8 +350,8 @@ public class PersonRepository {
 
 	public static boolean isDoctor(int personID) {
 		Person P = Person.getById(personID);
-		String memType = P.getMember_type().toLowerCase();
-		if(memType.equals("physician"))
+		String memType = P.getMemberType().toLowerCase();
+		if(memType.equals("P"))
 			return true;
 		return false;
 	}

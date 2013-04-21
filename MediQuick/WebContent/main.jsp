@@ -53,6 +53,7 @@
         </ul>   
     </teama:checkRole>
 
+    <!-- 
     <h3> List of <%= person.getRole().getName() %> 's permissions : </h3>
     <div id="ListPanel"> 
 			<% for(Permission perm : person.getRole().getPermissions()) { %>
@@ -61,6 +62,7 @@
 			     <br>
 			<% } %>
 	</div>
+	-->
 	
 	<teama:checkRole permission="SEARCH_PATIENTS">
 	   <a href="/MediQuick/viewSearchPatients.jsp">Search For Patients</a>	   

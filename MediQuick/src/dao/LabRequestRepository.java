@@ -29,7 +29,7 @@ public class LabRequestRepository {
 
     private int OrderingPhysicianId;
 
-    private String OrderPlaced;
+    private Date OrderPlaced;
 
     private String Specimen_type;
 
@@ -99,11 +99,11 @@ public class LabRequestRepository {
         this.OrderingPhysicianId = orderingPhysicianId;
     }
 
-    public String getOrderPlaced() {
+    public Date getOrderPlaced() {
         return OrderPlaced;
     }
 
-    public void setOrderPlaced(String orderPlaced) {
+    public void setOrderPlaced(Date orderPlaced) {
         this.OrderPlaced = orderPlaced;
     }
 
@@ -308,7 +308,7 @@ public class LabRequestRepository {
 
                 p1.setOrderingPhysicianId(result.getInt("ordering_physician_id"));
 
-                p1.setOrderPlaced(result.getString("order_placed"));
+                p1.setOrderPlaced(result.getDate("order_placed"));
 
                 p1.setSpecimen_type(result.getString("specimen_type"));
 
@@ -394,7 +394,7 @@ public class LabRequestRepository {
                 p1.setRequestingNurseId(result.getInt("requesting_nurse_id"));
                 p1.setNurseRequest_time(result.getDate("nurse_request_time"));
                 p1.setOrderingPhysicianId(result.getInt("ordering_physician_id"));
-                p1.setOrderPlaced(result.getString("order_placed"));
+                p1.setOrderPlaced(result.getDate("order_placed"));
                 p1.setSpecimen_type(result.getString("specimen_type"));
                 p1.setSpecimen_collection_time(result.getDate("specimen_collection_time"));
                 p1.setSpecimen_number(result.getString("specimen_number"));
