@@ -121,20 +121,20 @@ public class LabTestRepository {
 
     }
 
-    public static List<LabTestRepository> getList() {
+    public static ArrayList<LabTest> getList() {
 
-        final List<LabTestRepository> LabTestList = new ArrayList<LabTestRepository>();
-        LabTestRepository p1 = null;
+        ArrayList<LabTest> labTestList = new ArrayList<LabTest>();
+        LabTest p1 = null;
 
         ResultSet result = null;
-        String sql = "SELECT * FROM lab_test ";
+        String sql = "SELECT * FROM lab_test ORDER BY name";
 
         try {
 
             result = DB.executeQuery(sql);
 
             while (result.next()) {
-                p1 = new LabTestRepository();
+                p1 = new LabTest();
 
                 p1.setId(result.getInt("id"));
 
@@ -147,7 +147,7 @@ public class LabTestRepository {
                 p1.setPanels_description(result.getString("panels_description"));
 
                 p1.setSpecial_collection_requirements(result.getString("special_collection_requirements"));
-                LabTestList.add(p1);
+                labTestList.add(p1);
 
             }
         } catch (Exception e) {
@@ -155,7 +155,7 @@ public class LabTestRepository {
         } finally {
         }
 
-        return LabTestList;
+        return labTestList;
     }
 
     public static LabTest getLabTest(int Id) {

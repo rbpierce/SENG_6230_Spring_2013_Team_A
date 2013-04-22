@@ -90,7 +90,7 @@ public class ICD9CodeRepository {
         ICD9Code p1 = null;
 
         ResultSet result = null;
-        String sql = "SELECT * FROM iCD9_Code ";
+        String sql = "SELECT * FROM iCD9_Code ORDER BY code";
 
         try {
 
@@ -108,7 +108,7 @@ public class ICD9CodeRepository {
 
             }
         } catch (Exception e) {
-            System.out.println("Error Sql: " + e.getMessage());
+            e.printStackTrace();
         } finally {
         }
 

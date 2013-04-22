@@ -10,8 +10,8 @@ import dao.PersonRepository;
 
 public class LabTest extends LabTestRepository{
 
-    public static ArrayList<LabTestRepository> getTests() {
-        ArrayList<LabTestRepository> List = (ArrayList<LabTestRepository>) LabTestRepository.getList();
+    public static ArrayList<LabTest> getTests() {
+        ArrayList<LabTest> List = (ArrayList<LabTest>) LabTestRepository.getList();
         return List;
     }
 

@@ -104,6 +104,7 @@
 	        0px -1px 0px rgba(000,000,000,1),
 	        0px 1px 0px rgba(255,255,255,0.2);
 	    text-decoration: none;
+	    cursor: pointer;
 	}
     
     </style>
@@ -225,7 +226,7 @@
                 </td>
                 <td>
                 <!--  Test Pane -->
-                    <div><button href="#" class="button" style="margin-bottom: 10px;" onClick="document.location='somewhere'">Order New Test</button></div>
+                    <div><button href="#" class="button" style="margin-bottom: 10px;" onClick="document.location='/MediQuick/requestOrderTest.jsp'; ">Order New Test</button></div>
                     <table class="width300 border">
                         <tr>
                             <th>Test Ordered</th>

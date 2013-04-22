@@ -187,7 +187,7 @@ public class PatientRepository extends PersonRepository {
                 this.setSuffix(result.getString("suffix"));
                 this.setGender(result.getString("gender"));
                 this.setMaritalStatus(result.getString("marital_status"));
-                this.setBirthDate(result.getDate("birt_dDate"));
+                this.setBirthDate(result.getDate("birth_date"));
                 this.setIsTest(result.getBoolean("is_test"));
                 this.setIsActive(result.getBoolean("is_active"));
                 this.setUsername(result.getString("username"));
