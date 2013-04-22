@@ -3,7 +3,7 @@
 -- Server version:               5.6.10-log - MySQL Community Server (GPL)
 -- Server OS:                    Win32
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2013-04-21 18:45:07
+-- Date/time:                    2013-04-21 23:42:21
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -637,7 +637,10 @@ INSERT INTO `permission` (`id`, `name`, `description`) VALUES
 	(9, 'SEARCH_PATIENTS', 'Can search for patients by name'),
 	(10, 'VIEW_SUMMARY_PATIENT_DEMOGRAPHICS', 'See abbreviated patient demographics'),
 	(11, 'VIEW_COMPLETE_PATIENT_DEMOGRAPHICS', 'See complete patient demographics'),
-	(12, 'EDIT_PATIENT_DEMOGRAPHICS', 'Edit patient demographics');
+	(12, 'EDIT_PATIENT_DEMOGRAPHICS', 'Edit patient demographics'),
+	(13, 'ORDER_TESTS', 'Can order tests'),
+	(14, 'REQUEST_TESTS', 'Can request a test which requires physician approval'),
+	(15, 'APPROVE_TEST_REQUEST', 'Can approve/deny a test request');
 /*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 
 
@@ -799,6 +802,7 @@ INSERT INTO `role_permission` (`id`, `role_id`, `permission_id`) VALUES
 	(2, 2, 9),
 	(12, 2, 11),
 	(17, 2, 12),
+	(20, 2, 14),
 	(9, 3, 7),
 	(3, 3, 9),
 	(13, 3, 10),
@@ -806,6 +810,8 @@ INSERT INTO `role_permission` (`id`, `role_id`, `permission_id`) VALUES
 	(4, 4, 9),
 	(14, 4, 11),
 	(18, 4, 12),
+	(21, 4, 13),
+	(22, 4, 15),
 	(5, 5, 3),
 	(7, 5, 9),
 	(15, 5, 11),
