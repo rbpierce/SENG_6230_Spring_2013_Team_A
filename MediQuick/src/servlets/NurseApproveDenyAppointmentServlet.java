@@ -73,8 +73,6 @@ public class NurseApproveDenyAppointmentServlet extends HttpServlet {
                 //put a message for the patient to see later
                 String newMessage = "Your appointment request with Dr. " + DrName + " was DENIED by the nurse " + NurseName + ". You can try again making an appointment later.";
                 MessageRepository.PutNewMessage(patientID, newMessage);
-                
-                request.setAttribute("MESSAGES", MainServlet.printMessage(p.getMessages(p.getId())));
             }
 
         } catch (Exception e) {

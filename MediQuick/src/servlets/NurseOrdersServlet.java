@@ -41,7 +41,6 @@ public class NurseOrdersServlet extends HttpServlet {
         LabTest.RequestTest(TestList, Lab, ICD9Code, PatientID, p.getId(), DrID, "WaitingForDoctor");
         request.setAttribute("message", "You have successfully put your order");
 
-        request.setAttribute("MESSAGES", MainServlet.printMessage(p.getMessages(p.getId())));
         request.getRequestDispatcher("main.jsp").forward(request, response);
     }
 

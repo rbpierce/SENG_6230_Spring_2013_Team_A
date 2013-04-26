@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import dao.*;
 
 public class Patient extends PatientRepository {
+	
 	public Message getMessages(int PersonID)
 	{
 		ArrayList<MessageRepository> Messages = MessageRepository.getNewMessages(PersonID);

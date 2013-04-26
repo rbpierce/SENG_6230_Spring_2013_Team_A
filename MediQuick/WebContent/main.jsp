@@ -5,11 +5,13 @@
 <html>
   <head>
       <title>Welcome</title>
+    <link type="text/css" rel="stylesheet" href="/MediQuick/resources/main.css" />
       
   </head>
 
 
   <body>
+    <div id="container">
     <h2> Welcome, <%= person.getFirstName() + " " + person.getLastName() %> </h2>
     <a href="/MediQuick/LogOut">Logout</a>
     
@@ -38,6 +40,13 @@
 	    </ul>
     </teama:checkRole>
 
+     <teama:checkRole role="TECHNICIAN">
+        <h3>Welcome <%= person.getDisplayName() %></h3>    
+        <ul>
+            <li>You have <%= LabRequest.getRequestsOfLab(person.getTechnician().getLabID(person.getId()),"Unseen").size() %> pending lab requests at your laboratory, which you may complete</li>
+        </ul>   
+    </teama:checkRole>
+
     <teama:checkRole role="NURSE">
         <h3>Welcome Nurse. <%= person.getLastName() %></h3>    
         <ul>
@@ -51,34 +60,16 @@
             <li>You have <%= LabRequest.getTestsForPatient(person.getId(), Boolean.FALSE).size() %> pending lab requests which have been ordered for you</li>
             <li>You have <%= LabRequest.getTestsForPatient(person.getId(), Boolean.TRUE).size() %> completed lab requests which have been ordered for you</li>
         </ul>   
-    </teama:checkRole>
-
-    <!-- 
-    <h3> List of <%= person.getRole().getName() %> 's permissions : </h3>
-    <div id="ListPanel"> 
-			<% for(Permission perm : person.getRole().getPermissions()) { %>
-			
-			     <a href=<%= perm.getName() %>><%=perm.getDescription() %></a>
-			     <br>
-			<% } %>
-	</div>
-	-->
-
-    <teama:checkRole permission="doctor_appointment.jsp">
-	   <a href="/MediQuick/doctor_appointment.jsp">Make a doctor appointment here</a>	   
-    </teama:checkRole>
-    <teama:checkRole permission="/MediQuick/ViewPatientsServlet">
-	   <a href="/MediQuick/ViewPatients.jsp">See the list of your patients</a><br />	   
-    </teama:checkRole>
-    <teama:checkRole permission="ViewTests.jsp">
-	   <a href="/MediQuick/ViewTests.jsp">See the list of your tests</a><br /> 
-    </teama:checkRole>
-    <teama:checkRole permission="/MediQuick/ViewLabRequests">
-	   <a href="/MediQuick/ViewRequests.jsp">See the list of requests sent to this lab</a><br />
-    </teama:checkRole>
+    </teama:checkRole>   
+    
     <teama:checkRole permission="SEARCH_PATIENTS">
-	   <a href="/MediQuick/viewSearchPatients.jsp">Search For Patients</a>	   
+	   <div><a href="/MediQuick/viewSearchPatients.jsp">Search For Patients</a></div>
     </teama:checkRole>
-	
+    
+    <teama:checkRole permission="PROCESS_LAB_REQUEST">
+        <div><a href="/MediQuick/viewPendingLabRequests.jsp">View Pending Lab Requests</a></div>
+    </teama:checkRole>
+    
+	</div>
   </body>
 </html>

@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import domain.Patient;
+import domain.Person;
 
 public class PatientRepository extends PersonRepository {
 
@@ -76,10 +77,11 @@ public class PatientRepository extends PersonRepository {
     public PatientRepository() {
     }
 
-    public void insert(PatientRepository objPatient) {
+    public void insert(PatientRepository objPatient) throws Exception {
+    	if (objPatient.getPersonId()<=0) throw new Exception("Create person first!");
         String sql = "";
         sql = sql.concat(" insert into patient values");
-
+        sql = sql.concat(" (" + objPatient.getPersonId() + ", ");
         sql = sql.concat("'" + objPatient.getLastVisit() + "' , ");
         sql = sql.concat("'" + objPatient.getNextScheduledVisit() + "' , ");
         sql = sql.concat(objPatient.getHeightInInches() + " ,");
@@ -143,7 +145,7 @@ public class PatientRepository extends PersonRepository {
 
     	Patient p1 = null;
         ResultSet result = null;
-        String sql = "SELECT * FROM patient WHERE person_id=1";
+        String sql = "SELECT * FROM patient WHERE person_id=" + personId;
 
         try {
 
@@ -203,5 +205,9 @@ public class PatientRepository extends PersonRepository {
         }
 
     }
+
+	public static Person getById(String patientId) {
+		return getById(Integer.parseInt(patientId));
+	}
 
 }

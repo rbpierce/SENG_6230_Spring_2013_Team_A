@@ -53,8 +53,6 @@ public class DoctorApproveDenyRequest extends HttpServlet {
                //put a message for the patient to see later
                String newMessage = "Your Test request with Dr. " + DrName + " was APPROVED, and is waiting for the results.";
                MessageRepository.PutNewMessage(LR.getPatientId(), newMessage);
-               
-               request.setAttribute("MESSAGES", MainServlet.printMessage(p.getMessages(p.getId())));
             }
             if (request.getParameter("DENIED") != null) {
             	int ReqID = Integer.parseInt(request.getParameter("DENIED"));
@@ -66,8 +64,6 @@ public class DoctorApproveDenyRequest extends HttpServlet {
                 //put a message for the patient to see later
                 String newMessage = "Your Test request with Dr. " + DrName + " was DENIED (REQUEST_ID=" + ReqID + "). You have to make another appointment to have another test request.";
                 MessageRepository.PutNewMessage(LR.getPatientId(), newMessage);
-                
-            	request.setAttribute("MESSAGES", MainServlet.printMessage(p.getMessages(p.getId())));
             }
 
         } catch (Exception e) {

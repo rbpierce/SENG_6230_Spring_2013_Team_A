@@ -37,13 +37,13 @@ public class LabTechnicianRepository {
     }
 
     public void deleteLab_technician(LabTechnicianRepository objLab_technician) {
-        String sql = "delete * FROM lab_technician where (personId = " + objLab_technician.getPersonId() + ")";
+        String sql = "delete * FROM lab_technician where (person_d = " + objLab_technician.getPersonId() + ")";
         DB.executeQuery(sql);
 
     }
 
     public void deleteLab_technician(int PersonId) {
-        String sql = "delete * FROM lab_technician where (personId = " + PersonId + ")";
+        String sql = "delete * FROM lab_technician where (person_id = " + PersonId + ")";
         DB.executeQuery(sql);
 
     }
@@ -67,7 +67,7 @@ public class LabTechnicianRepository {
         sql = sql.concat("Hourly_rate=" + objLab_technician.getHourly_rate() + " ,");
         // quit the last ,
         sql = sql.substring(0, sql.length() - 1);
-        sql = sql.concat(" where personId=" + objLab_technician.getPersonId());
+        sql = sql.concat(" where person_id=" + objLab_technician.getPersonId());
         DB.executeQuery(sql);
 
     }
@@ -105,7 +105,7 @@ public class LabTechnicianRepository {
 
     	Technician p1 = null;
         ResultSet result = null;
-        String sql = "SELECT * FROM lab_technician where (personId = " + PersonId + ")";
+        String sql = "SELECT * FROM lab_technician where (person_id = " + PersonId + ")";
 
         try {
 
@@ -114,7 +114,7 @@ public class LabTechnicianRepository {
             if (result.next()) {
                 p1 = new Technician();
 
-                p1.setPersonId(result.getInt("personId"));
+                p1.setPersonId(result.getInt("person_d"));
 
                 p1.setHourly_rate(result.getFloat("hourly_rate"));
 

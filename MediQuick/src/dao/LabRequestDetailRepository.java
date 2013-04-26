@@ -72,6 +72,7 @@ public class LabRequestDetailRepository {
         // quit the last ,
         sql = sql.substring(0, sql.length() - 1);
         sql = sql.concat(" )");
+        System.out.println(sql);
         DB.executeUpdate(sql);
 
     }
@@ -199,6 +200,31 @@ public class LabRequestDetailRepository {
         }
 
         return tests;
+	}
+	
+	public static ArrayList<LabRequestDetail> getAll(int labRequestId) {
+		ArrayList<LabRequestDetail> testDetails = new ArrayList<LabRequestDetail>();
+		LabTest p1 = null;
+
+        ResultSet result = null;
+        String sql = "SELECT * FROM lab_request_details where(lab_request_id = " + labRequestId + ")";
+
+        try {
+            result = DB.executeQuery(sql);
+            while (result.next()) {
+            	LabRequestDetail detail = new LabRequestDetail();
+            	detail.setId(result.getInt("id"));
+            	detail.setComments(result.getString("comments"));
+            	detail.setLabRequestId(labRequestId);
+            	detail.setLabTestId(result.getInt("lab_test_id"));
+                testDetails.add(detail);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+
+        return testDetails;
 	}
 
 }

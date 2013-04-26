@@ -182,7 +182,9 @@ public class LabRequestRepository {
     public LabRequestRepository() {
     }
 
+    //TODO: Replace below code (vulnerable to SQL insertion attack) with PreparedStatement
     public void insert() {
+    	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");
         String sql = "";
         sql = sql.concat(" insert into lab_request values(");
 
@@ -201,14 +203,14 @@ public class LabRequestRepository {
             sql = sql.concat("null , ");
 
         if (this.getNurseRequest_time() != null)
-            sql = sql.concat("'" + this.getNurseRequest_time() + "' , ");
+            sql = sql.concat("'" + sdf.format(this.getNurseRequest_time()) + "' , ");
         else
             sql = sql.concat("null , ");
 
         sql = sql.concat(this.getOrderingPhysicianId() + " ,");
 
         if (this.getOrderPlaced() != null)
-            sql = sql.concat("'" + this.getOrderPlaced() + "' , ");
+            sql = sql.concat("'" + sdf.format(this.getOrderPlaced()) + "' , ");
 
         if (this.getSpecimen_type() != null)
             sql = sql.concat("'" + this.getSpecimen_type() + "' ,");
@@ -216,7 +218,7 @@ public class LabRequestRepository {
             sql = sql.concat("'Whole Blood' , ");
 
         if (this.getSpecimen_collection_time() != null)
-            sql = sql.concat("'" + this.getSpecimen_collection_time() + "' , ");
+            sql = sql.concat("'" + sdf.format(this.getSpecimen_collection_time()) + "' , ");
         else
             sql = sql.concat("null , ");
 
@@ -226,12 +228,12 @@ public class LabRequestRepository {
             sql = sql.concat("null , ");
 
         if (this.getUrine_collection_start() != null)
-            sql = sql.concat("'" + this.getUrine_collection_start() + "' , ");
+            sql = sql.concat("'" + sdf.format(this.getUrine_collection_start()) + "' , ");
         else
             sql = sql.concat("null , ");
 
         if (this.getUrine_collection_finish() != null)
-            sql = sql.concat("'" + this.getUrine_collection_finish() + "' , ");
+            sql = sql.concat("'" + sdf.format(this.getUrine_collection_finish()) + "' , ");
         else
             sql = sql.concat("null , ");
 
@@ -245,24 +247,32 @@ public class LabRequestRepository {
         else
             sql = sql.concat("'Unseen')");
 
+        System.out.println(sql);
         DB.executeUpdate(sql);
     }
 
     public static void update(LabRequest objLabRequest) {
-        String sql = "";
+    	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");
+
+    	String sql = "";
         sql = sql.concat(" update lab_request set ");
 
         sql = sql.concat("laboratory_id=" + objLabRequest.getLaboratoryId() + " ,");
         sql = sql.concat("patient_id=" + objLabRequest.getPatientId() + " ,");
         sql = sql.concat("requesting_nurse_id=" + objLabRequest.getRequestingNurseId() + " ,");
-        sql = sql.concat("nurse_request_time= '" + objLabRequest.getNurseRequest_time() + "' , ");
+        if (objLabRequest.getNurseRequest_time()!=null)
+        	sql = sql.concat("nurse_request_time= '" + sdf.format(objLabRequest.getNurseRequest_time()) + "' , ");
         sql = sql.concat("ordering_physician_id=" + objLabRequest.getOrderingPhysicianId() + " ,");
-        sql = sql.concat("order_placed= '" + objLabRequest.getOrderPlaced() + "' , ");
+        if (objLabRequest.getOrderPlaced()!=null)
+        	sql = sql.concat("order_placed= '" + sdf.format(objLabRequest.getOrderPlaced()) + "' , ");
         sql = sql.concat("specimen_type= '" + objLabRequest.getSpecimen_type() + "' ,");
-        sql = sql.concat("specimen_collection_time= '" + objLabRequest.getSpecimen_collection_time() + "' , ");
+        if (objLabRequest.getSpecimen_collection_time()!=null)
+        	sql = sql.concat("specimen_collection_time= '" + sdf.format(objLabRequest.getSpecimen_collection_time()) + "' , ");
         sql = sql.concat("specimen_number= '" + objLabRequest.getSpecimen_number() + "' ,");
-        sql = sql.concat("urine_collection_start= '" + objLabRequest.getUrine_collection_start() + "' , ");
-        sql = sql.concat("urine_collection_finish= '" + objLabRequest.getUrine_collection_finish() + "' , ");
+        if (objLabRequest.getUrine_collection_start()!=null)
+        	sql = sql.concat("urine_collection_start= '" + sdf.format(objLabRequest.getUrine_collection_start()) + "' , ");
+        if (objLabRequest.getUrine_collection_finish()!=null)
+        	sql = sql.concat("urine_collection_finish= '" + sdf.format(objLabRequest.getUrine_collection_finish()) + "' , ");
         sql = sql.concat("urine_interval_in_minutes=" + objLabRequest.getUrine_interval_in_minutes() + " ,");
         sql = sql.concat("urine_volume_in_milliliters=" + objLabRequest.getUrine_volume_in_milliliters() + " ,");
         sql = sql.concat("icd9_code_id=" + objLabRequest.getICD9CodeId() + " ,");
@@ -440,6 +450,14 @@ public class LabRequestRepository {
         return requestsOfLab;
 	}
 
+	public static ArrayList<LabRequest> getRequestsOfLab(int labID, String status) {
+		String sql = "SELECT * FROM lab_request WHERE(laboratory_id=" + labID + ") AND status IN (\"" + status + "\")";
+        ArrayList<LabRequest> requestsOfLab = new ArrayList<LabRequest>();
+        ResultSet result = DB.executeQuery(sql);
+        requestsOfLab = LabRequest.getAllFromResultSet(result);
+        return requestsOfLab;
+	}
+	
 	public static void updateStatus(int reqID, String Status) {
 		String sql = "";
         sql = "update lab_request set `status`='" + Status + "' where id=" + String.valueOf(reqID) ;
@@ -458,7 +476,7 @@ public class LabRequestRepository {
 	public static ArrayList<LabRequest> getRequestsAwaitingResults(Physician physician) { 
 		ArrayList<LabRequest> requestAwaitingResults = new ArrayList<LabRequest>();
 		String sql = 	"SELECT * FROM lab_request req LEFT JOIN lab_result res ON req.id=res.lab_request_id" + 
-						"	WHERE req.ordering_physician_id=" + physician.getId() + " AND res.id IS NULL";
+						"	WHERE req.ordering_physician_id=" + physician.getPersonId() + " AND res.id IS NULL";
         ResultSet result = DB.executeQuery(sql);
         requestAwaitingResults = LabRequest.getAllFromResultSet(result);
 		return requestAwaitingResults;

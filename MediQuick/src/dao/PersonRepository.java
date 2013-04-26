@@ -28,6 +28,20 @@ public class PersonRepository {
     private boolean isPasswordResetRequired;
     private Role _role;
 
+    public PersonRepository() { 
+    	Id = 0;
+    	_memberType = null;
+    	_firstName = "";
+    	_lastName = "";
+    	_middleName = "";
+    	_maidenName = "";
+    	_suffix = "";
+    	_gender = "";
+    	maritalStatus = "UNREPORTED";
+    	_birthDate = null;
+    	isActive = true;
+    }
+
     public int getId() {
         return Id;
     }
@@ -157,9 +171,6 @@ public class PersonRepository {
         this._role = _role;
     }
 
-
-    public PersonRepository() {
-    }
     
     public Message getMessages(int personID)
     {

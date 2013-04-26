@@ -3,6 +3,7 @@ package domain;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import dao.DB;
 import dao.LabRequestDetailRepository;
@@ -11,6 +12,33 @@ import dao.LabResultRepository;
 import dao.LabTestRepository;
 
 public class LabRequest extends LabRequestRepository {
+
+	
+	public LabRequest() {
+	}
+	
+	public LabRequest(String status, int id, int laboratory_id, int patient_id, int requesting_nurse_id, 
+			Date nurse_request_time, int ordering_physician_id, Date order_placed, 
+			Date specimen_collection_time, String specimen_type, Date urine_collection_start, 
+			String specimen_number, int urine_interval_in_minutes, Date urine_collection_finish, 
+			int urine_volume_in_milliliters, int icd9_code_id) { 
+		this.setStatus(status);                
+		this.setId(id);
+		this.setLaboratoryId(laboratory_id);
+		this.setPatientId(patient_id);
+		this.setRequestingNurseId(requesting_nurse_id);
+		this.setNurseRequest_time(nurse_request_time);
+		this.setOrderingPhysicianId(ordering_physician_id);
+		this.setOrderPlaced(order_placed);
+		this.setSpecimen_type(specimen_type);
+		this.setSpecimen_collection_time(specimen_collection_time);
+		this.setSpecimen_number(specimen_number);
+		this.setUrine_collection_start(urine_collection_start);
+		this.setUrine_collection_finish(urine_collection_finish);
+		this.setUrine_interval_in_minutes(urine_interval_in_minutes);
+		this.setUrine_volume_in_milliliters(urine_volume_in_milliliters);
+		this.setICD9CodeId(icd9_code_id);   		
+	}
 
 	public static ArrayList<LabRequest> getByLabId(int labID) {
 		ArrayList<LabRequest> result = LabRequestRepository.getRequestsOfLab(labID);

@@ -3,7 +3,7 @@
 <html>
   <head>
       <title>Welcome</title>
-      
+    <link type="text/css" rel="stylesheet" href="/MediQuick/resources/main.css" />
       <script type="text/javascript"> 
 		function showhide(id, id2, text1, text2){ 
 			if (document.getElementById){ 
@@ -24,6 +24,7 @@
 
 
   <body>
+  <div id="container">
     <h2> Welcome to MediQuik Lab Simulator </h2>
 	
     <br>
@@ -75,6 +76,6 @@
 	<p/>
 	<p/>
 	<button id="2" onClick="showhide('script', '2', 'Register', 'Do Not Register')">Register</button>
-	
+	</div>
   </body>
 </html>

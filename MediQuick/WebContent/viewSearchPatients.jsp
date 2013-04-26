@@ -17,9 +17,11 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
     <title>Patient List</title>
+    <link type="text/css" rel="stylesheet" href="/MediQuick/resources/main.css" />
     </head>
 <body>
 
+    <div id="container">
 	<teama:checkRole permission="SEARCH_PATIENTS">
 		<h4>Search for Patients</h4>
 
@@ -73,6 +75,10 @@
 				}
 			%>
 		</table>
+		<div>
+            <button class="button" style="margin-top: 10px;" 
+                onClick="document.location='/MediQuick/viewPatient.jsp'; ">Add New Patient</button>
+        </div>
 		<br />
 		<br />
 	</teama:checkRole>
@@ -80,5 +86,7 @@
 	<teama:checkRole noPermission="SEARCH_PATIENTS">
 	   YOU DO NOT HAVE PERMISSION TO VIEW THIS PAGE	
 	</teama:checkRole>
+	
+	</div>
 </body>
 </html>

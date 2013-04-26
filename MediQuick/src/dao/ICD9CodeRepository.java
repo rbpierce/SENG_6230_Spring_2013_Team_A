@@ -115,9 +115,9 @@ public class ICD9CodeRepository {
         return ICD9CodeList;
     }
 
-    public static ICD9CodeRepository getICD9Code(int id) {
+    public static ICD9Code getICD9Code(int id) {
 
-        ICD9CodeRepository p1 = null;
+    	ICD9Code p1 = null;
         ResultSet result = null;
         String sql = "SELECT * FROM iCD9_Code where (id = " + id + ")";
 
@@ -126,7 +126,7 @@ public class ICD9CodeRepository {
             result = DB.executeQuery(sql);
 
             if (result.next()) {
-                p1 = new ICD9CodeRepository();
+                p1 = new ICD9Code();
 
                 p1.setId(result.getInt("id"));
 
@@ -139,9 +139,7 @@ public class ICD9CodeRepository {
                 return null;
             }
         } catch (SQLException e) {
-            System.out.println("Error Sql: " + e.getMessage());
-            System.out.println("SQLState: " + e.getSQLState());
-            System.out.println("ErrorCode: " + e.getErrorCode());
+            e.printStackTrace();
         } finally {
         }
 

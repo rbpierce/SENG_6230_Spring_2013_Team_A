@@ -3,7 +3,7 @@
 -- Server version:               5.6.10-log - MySQL Community Server (GPL)
 -- Server OS:                    Win32
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2013-04-21 23:42:21
+-- Date/time:                    2013-04-26 00:05:06
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `icd9_code` (
   KEY `icd9_code__code` (`code`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.icd9_code: ~1 rows (approximately)
+-- Dumping data for table mediquik_team_a.icd9_code: ~0 rows (approximately)
 DELETE FROM `icd9_code`;
 /*!40000 ALTER TABLE `icd9_code` DISABLE KEYS */;
 INSERT INTO `icd9_code` (`id`, `code`, `description`) VALUES
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `laboratory` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.laboratory: ~1 rows (approximately)
+-- Dumping data for table mediquik_team_a.laboratory: ~0 rows (approximately)
 DELETE FROM `laboratory`;
 /*!40000 ALTER TABLE `laboratory` DISABLE KEYS */;
 INSERT INTO `laboratory` (`id`, `name`, `phone_number`, `street1`, `street2`, `city`, `state_code`, `zipcode`, `zipcode_plus4`) VALUES
@@ -131,7 +131,9 @@ INSERT INTO `lab_request` (`id`, `laboratory_id`, `patient_id`, `requesting_nurs
 	(20, 1, 8, 2, NULL, 4, '2013-04-19 21:14:27', 'Whole Blood', NULL, NULL, NULL, NULL, 0, 0, 1, 'Denied'),
 	(21, 1, 7, 2, NULL, 4, '2013-04-19 21:14:45', 'Whole Blood', NULL, NULL, NULL, NULL, 0, 0, 1, 'Unseen'),
 	(22, 1, 1, 2, NULL, 4, '2013-04-19 23:58:56', 'Whole Blood', NULL, NULL, NULL, NULL, 0, 0, 1, 'Unseen'),
-	(23, 1, 1, 2, NULL, 4, '2013-04-20 00:08:28', 'Whole Blood', NULL, NULL, NULL, NULL, 0, 0, 1, 'Denied');
+	(23, 1, 1, 2, NULL, 4, '2013-04-20 00:08:28', 'Whole Blood', NULL, NULL, NULL, NULL, 0, 0, 1, 'Denied'),
+	(24, 1, 1, NULL, NULL, 5, '2013-04-25 21:28:00', 'Serum', '1900-01-01 01:00:00', '12345', '2000-02-02 02:02:00', '2003-03-03 03:03:00', 44, 55, 1, 'Unseen'),
+	(25, 1, 7, NULL, NULL, 5, '2013-04-25 22:07:00', 'Urine', '1900-01-01 01:00:00', '12345', '2000-02-02 02:02:00', '2003-03-03 03:03:00', 44, 55, 1, 'Unseen');
 /*!40000 ALTER TABLE `lab_request` ENABLE KEYS */;
 
 
@@ -288,7 +290,14 @@ INSERT INTO `lab_request_details` (`id`, `lab_request_id`, `lab_test_id`, `comme
 	(134, 22, 4, 'null'),
 	(135, 22, 7, 'null'),
 	(136, 23, 3, 'null'),
-	(137, 23, 5, 'null');
+	(137, 23, 5, 'null'),
+	(138, 24, 1, 'null'),
+	(139, 24, 2, 'null'),
+	(140, 24, 3, 'null'),
+	(141, 25, 1, 'null'),
+	(142, 25, 2, 'null'),
+	(143, 25, 3, 'null'),
+	(144, 25, 4, 'null');
 /*!40000 ALTER TABLE `lab_request_details` ENABLE KEYS */;
 
 
@@ -308,7 +317,7 @@ CREATE TABLE IF NOT EXISTS `lab_result` (
   CONSTRAINT `fk_lab_result__lab_technician` FOREIGN KEY (`processed_by_technician_id`) REFERENCES `lab_technician` (`person_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.lab_result: ~5 rows (approximately)
+-- Dumping data for table mediquik_team_a.lab_result: ~4 rows (approximately)
 DELETE FROM `lab_result`;
 /*!40000 ALTER TABLE `lab_result` DISABLE KEYS */;
 INSERT INTO `lab_result` (`id`, `lab_request_id`, `processed_by_technician_id`, `completion_status`, `completion_status_details`, `completion_date`) VALUES
@@ -335,7 +344,7 @@ CREATE TABLE IF NOT EXISTS `lab_result_details` (
   CONSTRAINT `fk_lab_result_details__lab_test` FOREIGN KEY (`lab_test_id`) REFERENCES `lab_test` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.lab_result_details: ~48 rows (approximately)
+-- Dumping data for table mediquik_team_a.lab_result_details: ~44 rows (approximately)
 DELETE FROM `lab_result_details`;
 /*!40000 ALTER TABLE `lab_result_details` DISABLE KEYS */;
 INSERT INTO `lab_result_details` (`id`, `lab_result_id`, `lab_test_id`, `result`, `details`) VALUES
@@ -399,7 +408,7 @@ CREATE TABLE IF NOT EXISTS `lab_technician` (
   CONSTRAINT `fk_lab_technician__person` FOREIGN KEY (`person_id`) REFERENCES `person` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.lab_technician: ~1 rows (approximately)
+-- Dumping data for table mediquik_team_a.lab_technician: ~0 rows (approximately)
 DELETE FROM `lab_technician`;
 /*!40000 ALTER TABLE `lab_technician` DISABLE KEYS */;
 INSERT INTO `lab_technician` (`person_id`, `hourly_rate`) VALUES
@@ -422,7 +431,7 @@ CREATE TABLE IF NOT EXISTS `lab_technician_laboratory` (
   CONSTRAINT `fk_lab_technician_laboratory__person` FOREIGN KEY (`person_id`) REFERENCES `person` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.lab_technician_laboratory: ~1 rows (approximately)
+-- Dumping data for table mediquik_team_a.lab_technician_laboratory: ~0 rows (approximately)
 DELETE FROM `lab_technician_laboratory`;
 /*!40000 ALTER TABLE `lab_technician_laboratory` DISABLE KEYS */;
 INSERT INTO `lab_technician_laboratory` (`id`, `person_id`, `laboratory_id`, `hire_date`, `termination_date`) VALUES
@@ -517,7 +526,7 @@ CREATE TABLE IF NOT EXISTS `medical_practice` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.medical_practice: ~1 rows (approximately)
+-- Dumping data for table mediquik_team_a.medical_practice: ~0 rows (approximately)
 DELETE FROM `medical_practice`;
 /*!40000 ALTER TABLE `medical_practice` DISABLE KEYS */;
 INSERT INTO `medical_practice` (`id`, `name`, `phone_number`, `street1`, `street2`, `city`, `state_code`, `zipcode`, `zipcodeperson_plus4`) VALUES
@@ -534,7 +543,7 @@ CREATE TABLE IF NOT EXISTS `nurse` (
   CONSTRAINT `fk_nurse__person` FOREIGN KEY (`person_id`) REFERENCES `person` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.nurse: ~1 rows (approximately)
+-- Dumping data for table mediquik_team_a.nurse: ~0 rows (approximately)
 DELETE FROM `nurse`;
 /*!40000 ALTER TABLE `nurse` DISABLE KEYS */;
 INSERT INTO `nurse` (`person_id`, `hourly_rate`) VALUES
@@ -624,7 +633,7 @@ CREATE TABLE IF NOT EXISTS `permission` (
   UNIQUE KEY `uq_permission__name` (`name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.permission: ~10 rows (approximately)
+-- Dumping data for table mediquik_team_a.permission: ~11 rows (approximately)
 DELETE FROM `permission`;
 /*!40000 ALTER TABLE `permission` DISABLE KEYS */;
 INSERT INTO `permission` (`id`, `name`, `description`) VALUES
@@ -640,7 +649,8 @@ INSERT INTO `permission` (`id`, `name`, `description`) VALUES
 	(12, 'EDIT_PATIENT_DEMOGRAPHICS', 'Edit patient demographics'),
 	(13, 'ORDER_TESTS', 'Can order tests'),
 	(14, 'REQUEST_TESTS', 'Can request a test which requires physician approval'),
-	(15, 'APPROVE_TEST_REQUEST', 'Can approve/deny a test request');
+	(15, 'APPROVE_TEST_REQUEST', 'Can approve/deny a test request'),
+	(16, 'PROCESS_LAB_REQUEST', 'Add/Edit results on a lab request');
 /*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 
 
@@ -665,7 +675,7 @@ CREATE TABLE IF NOT EXISTS `person` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.person: ~10 rows (approximately)
+-- Dumping data for table mediquik_team_a.person: ~9 rows (approximately)
 DELETE FROM `person`;
 /*!40000 ALTER TABLE `person` DISABLE KEYS */;
 INSERT INTO `person` (`id`, `member_type`, `first_name`, `middle_name`, `last_name`, `maiden_name`, `suffix`, `gender`, `marital_status`, `birth_date`, `is_test`, `is_active`, `username`, `password_plaintext`, `is_password_reset_required`) VALUES
@@ -695,7 +705,7 @@ CREATE TABLE IF NOT EXISTS `person_role` (
   CONSTRAINT `fk_person_role__role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.person_role: ~10 rows (approximately)
+-- Dumping data for table mediquik_team_a.person_role: ~9 rows (approximately)
 DELETE FROM `person_role`;
 /*!40000 ALTER TABLE `person_role` DISABLE KEYS */;
 INSERT INTO `person_role` (`id`, `person_id`, `role_id`) VALUES
@@ -721,7 +731,7 @@ CREATE TABLE IF NOT EXISTS `physician` (
   CONSTRAINT `fk_physician__person` FOREIGN KEY (`person_id`) REFERENCES `person` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.physician: ~4 rows (approximately)
+-- Dumping data for table mediquik_team_a.physician: ~3 rows (approximately)
 DELETE FROM `physician`;
 /*!40000 ALTER TABLE `physician` DISABLE KEYS */;
 INSERT INTO `physician` (`person_id`, `yearly_salary`) VALUES
@@ -790,7 +800,7 @@ CREATE TABLE IF NOT EXISTS `role_permission` (
   CONSTRAINT `fk_role_permission__role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.role_permission: ~19 rows (approximately)
+-- Dumping data for table mediquik_team_a.role_permission: ~21 rows (approximately)
 DELETE FROM `role_permission`;
 /*!40000 ALTER TABLE `role_permission` DISABLE KEYS */;
 INSERT INTO `role_permission` (`id`, `role_id`, `permission_id`) VALUES
@@ -806,6 +816,7 @@ INSERT INTO `role_permission` (`id`, `role_id`, `permission_id`) VALUES
 	(9, 3, 7),
 	(3, 3, 9),
 	(13, 3, 10),
+	(23, 3, 16),
 	(6, 4, 5),
 	(4, 4, 9),
 	(14, 4, 11),
