@@ -141,7 +141,7 @@ public class RoleRepository {
                 role.setName(result.getString("name"));
                 ResultSet rs = RolePermissionRepository.getPermissions(role.getId());
                 while (rs.next()) { 
-                    Permission permission = PermissionRepository.getPermission(rs.getInt("permissionId"));
+                    Permission permission = PermissionRepository.getPermission(rs.getInt("permission_id"));
                     System.out.println("Adding " + permission);
                     role.getPermissions().add(permission);
                 }         

@@ -82,15 +82,15 @@ public class PatientRepository extends PersonRepository {
         String sql = "";
         sql = sql.concat(" insert into patient values");
         sql = sql.concat(" (" + objPatient.getPersonId() + ", ");
-        sql = sql.concat("'" + objPatient.getLastVisit() + "' , ");
-        sql = sql.concat("'" + objPatient.getNextScheduledVisit() + "' , ");
+        sql = sql.concat(objPatient.getLastVisit()==null?"NULL,": ("'" + objPatient.getLastVisit() + "'") + " , ");
+        sql = sql.concat(objPatient.getNextScheduledVisit()==null?"NULL,": ("'" + objPatient.getNextScheduledVisit() + "'") + " , ");
         sql = sql.concat(objPatient.getHeightInInches() + " ,");
         sql = sql.concat(objPatient.getWeightInPounds() + " ,");
-        sql = sql.concat("'" + objPatient.getTobaccoStatus() + "' ,");
+        sql = sql.concat(objPatient.getTobaccoStatus()==null?"\"UNKNOWN\",": ("'" + objPatient.getTobaccoStatus() + "'") + " , ");
         // quit the last ,
         sql = sql.substring(0, sql.length() - 1);
         sql = sql.concat(" )");
-        DB.executeQuery(sql);
+        DB.executeUpdate(sql);
 
     }
 
@@ -106,7 +106,7 @@ public class PatientRepository extends PersonRepository {
         // quit the last ,
         sql = sql.substring(0, sql.length() - 1);
         sql = sql.concat(" where person_id=" + objPatient.getPersonId());
-        DB.executeQuery(sql);
+        DB.executeUpdate(sql);
 
     }
 

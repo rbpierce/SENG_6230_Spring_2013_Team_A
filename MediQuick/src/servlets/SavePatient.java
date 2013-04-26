@@ -35,11 +35,11 @@ public class SavePatient extends HttpServlet {
         HttpSession session = request.getSession();
         Person person = (Person) session.getAttribute("person");
         String patientId = request.getParameter("patient_id");
-        boolean isNewPatient = patientId==null ? true : false;
+        boolean isNewPatient = patientId==null || patientId.equals("0")? true : false;
         String forwardPage = "/viewPatient.jsp?id=";
 
     	Patient patient = isNewPatient ? new Patient() : PatientRepository.getById(patientId).getPatient();
-    	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm");
+    	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
     	
         try {
         	patient.setFirstName(request.getParameter("first_name"));
@@ -48,6 +48,10 @@ public class SavePatient extends HttpServlet {
         	patient.setGender(request.getParameter("gender"));
         	patient.setMaritalStatus(request.getParameter("marital_status"));
         	patient.setRole(Role.getRoleByName(Role.PATIENT));
+        	patient.setMemberType("PATIENT");
+        	int newId = PatientRepository.getMaxID()+1;
+        	patient.setId(newId);
+        	patient.setPersonId(newId);
         	patient.insertPerson(patient);
         	patient.insert(patient);
         	forwardPage += patient.getId() + "&msg=" + (isNewPatient ? "New Patient saved!" : "Patient Updated");        	

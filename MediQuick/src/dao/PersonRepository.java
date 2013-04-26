@@ -206,30 +206,45 @@ public class PersonRepository {
 
     public void insertPerson(PersonRepository objPerson) {
         String sql = "";
+    	java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
         sql = sql
-                .concat(" insert into Person (`member_type`,`first_name`,`middle_name`,`last_name`,`maiden_name`,`suffix`,`gender`,`marital_status`,`birth_date`,`is_test`,`is_active`,`username`,`password_plaintext`,`is_password_reset_required`)");
+                .concat(" insert into Person (`id`, `member_type`,`first_name`,`middle_name`,`last_name`,`maiden_name`,`suffix`,`gender`,`marital_status`,`birth_date`,`is_test`,`is_active`,`username`,`password_plaintext`,`is_password_reset_required`)");
         sql = sql.concat(" values (");
-
-        sql = sql.concat(objPerson.getMemberType() + " ,");
-        sql = sql.concat(objPerson.getFirstName() + " ,");
-        sql = sql.concat(objPerson.getMiddleName() + " ,");
-        sql = sql.concat(objPerson.getLastName() + " ,");
-        sql = sql.concat(objPerson.getMaidenName() + " ,");
-        sql = sql.concat(objPerson.getSuffix() + " ,");
-        sql = sql.concat(objPerson.getGender() + " ,");
-        sql = sql.concat(objPerson.getMaritalStatus() + " ,");
-        sql = sql.concat(objPerson.getBirthDate() + " , ");
+        sql = sql.concat((objPerson.getId()<=0 ? PersonRepository.getMaxID()+1 : objPerson.getId()) + ", \"");
+        sql = sql.concat(objPerson.getMemberType() + "\" ,\"");
+        sql = sql.concat(objPerson.getFirstName() + "\" ,\"");
+        sql = sql.concat(objPerson.getMiddleName() + "\" ,\"");
+        sql = sql.concat(objPerson.getLastName() + "\" ,\"");
+        sql = sql.concat(objPerson.getMaidenName() + "\" ,\"");
+        sql = sql.concat(objPerson.getSuffix() + "\" ,\"");
+        sql = sql.concat(objPerson.getGender() + "\" ,\"");
+        sql = sql.concat(objPerson.getMaritalStatus() + "\" ,\"");
+        sql = sql.concat(sdf.format(objPerson.getBirthDate()) + "\" , ");
         sql = sql.concat(String.valueOf(objPerson.getIsTest())) + " ,";
-        sql = sql.concat(String.valueOf(objPerson.getIsActive())) + " ,";
-        sql = sql.concat(objPerson.getUsername() + " ,");
-        sql = sql.concat(objPerson.getPasswordPlaintext() + " ,");
+        sql = sql.concat(String.valueOf(objPerson.getIsActive())) + " ,\"";
+        sql = sql.concat(objPerson.getUsername() + "\" ,\"");
+        sql = sql.concat(objPerson.getPasswordPlaintext() + "\" ,");
         sql = sql.concat(String.valueOf(objPerson.getIsPasswordResetRequired())) + " )";
 
-        DB.executeQuery(sql);
+        DB.executeUpdate(sql);
 
     }
 
-    public static void updatePerson(PersonRepository objPerson) {
+    public static int getMaxID() {
+        String sql = "SELECT MAX(id) FROM person";
+        ResultSet res = DB.executeQuery(sql);
+        int maxID = 0;
+        try {
+            if (res.next())
+                maxID = res.getInt(1);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return maxID;
+    }
+
+
+	public static void updatePerson(PersonRepository objPerson) {
         String sql = "";
         sql = sql.concat(" update Person set ");
 
@@ -248,7 +263,7 @@ public class PersonRepository {
         sql = sql.concat("`password_plaintext`=" + objPerson.getPasswordPlaintext() + " ,");
         sql = sql.concat("`is_password_reset_required`=" + objPerson.getIsPasswordResetRequired());
         sql = sql.concat(" where `id`=" + objPerson.getId());
-        DB.executeQuery(sql);
+        DB.executeUpdate(sql);
 
     }
 
