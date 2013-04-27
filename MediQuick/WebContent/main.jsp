@@ -1,6 +1,7 @@
 <%@ page import="domain.*, dao.*" contentType="text/html;charset=UTF-8" language="java" %>
+<% request.setAttribute("title", "Overview"); %>
 <%@ include file="/header.jsp" %>
-
+<% title =  "Welcome, " + person.getFirstName() + " " + person.getLastName(); %>
 
 <html>
   <head>
@@ -12,28 +13,10 @@
 
   <body>
     <div id="container">
-    <h2> Welcome, <%= person.getFirstName() + " " + person.getLastName() %> </h2>
-    <a href="/MediQuick/LogOut">Logout</a>
-    
-    <%
-            String message = "";
-            if(request.getAttribute("message")!=null)
-                message = request.getAttribute("message").toString();
-        %>
-    <h4><%= message %></h4>
-    
-    <%
-            if(request.getAttribute("MESSAGES")!=null){
-                message = request.getAttribute("MESSAGES").toString();
-            }
-            else 
-                message = "";
-        %>
-    
-    <%= message %>
+    <%= topLine %>    
 	
     <teama:checkRole role="PHYSICIAN">
-        <h3>Welcome Dr. <%= person.getLastName() %></h3>    
+        <h3>Welcome, Dr. <%= person.getLastName() %></h3>    
 	    <ul>
 	        <li>You have <%= LabRequest.getRequestsWaitingForDoctor(person.getId()).size() %> lab requests from nurses awaiting your sign-off</li>
 	        <li>You have <%= LabRequest.getRequestsAwaitingResults(person.getPhysician()).size() %> requests pending lab results</li>
@@ -41,21 +24,21 @@
     </teama:checkRole>
 
      <teama:checkRole role="TECHNICIAN">
-        <h3>Welcome <%= person.getDisplayName() %></h3>    
+        <h3>Welcome, <%= person.getDisplayName() %></h3>    
         <ul>
             <li>You have <%= LabRequest.getRequestsOfLab(person.getTechnician().getLabID(person.getId()),"Unseen").size() %> pending lab requests at your laboratory, which you may complete</li>
         </ul>   
     </teama:checkRole>
 
     <teama:checkRole role="NURSE">
-        <h3>Welcome Nurse. <%= person.getLastName() %></h3>    
+        <h3>Welcome, Nurse. <%= person.getLastName() %></h3>    
         <ul>
             <li>You have <%= LabRequest.getRequestsAwaitingPhysicianApproval(person.getNurse()).size() %> lab requests awaiting physician sign-off</li>
         </ul>   
     </teama:checkRole>
     
      <teama:checkRole role="PATIENT">
-        <h3>Welcome <%= person.getDisplayName() %></h3>    
+        <h3>Welcome, <%= person.getDisplayName() %></h3>    
         <ul>
             <li>You have <%= LabRequest.getTestsForPatient(person.getId(), Boolean.FALSE).size() %> pending lab requests which have been ordered for you</li>
             <li>You have <%= LabRequest.getTestsForPatient(person.getId(), Boolean.TRUE).size() %> completed lab requests which have been ordered for you</li>

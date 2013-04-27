@@ -1,10 +1,9 @@
 <%@ page import="domain.*, dao.*, java.util.*, java.text.SimpleDateFormat" language="java"
 	contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<% request.setAttribute("title", "Process Pending Lab Request"); %>
 <%@ include file="/header.jsp"%>
 
 <%
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-
     int labRequestId = request.getParameter("lab_request_id")==null? -1 : Integer.parseInt(request.getParameter("lab_request_id"));
     if (labRequestId<=0) throw new Exception("Illegal access: Lab Request id must be passed");
     LabRequest labRequest = LabRequestRepository.getById(labRequestId);
@@ -20,13 +19,14 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Process Pending Lab Request</title>
+<title><%= title %></title>
     <link type="text/css" rel="stylesheet" href="/MediQuick/resources/main.css" />
 </head>
 
 <body id="requestOrderTest">
     <a href="/MediQuick/viewPendingLabRequests.jsp">Back to Pending Lab Requests</a>
 	<div id="container">
+	   <%= topLine.toString() %>
 		<teama:checkRole permission="PROCESS_LAB_REQUEST">
 
 			<form method="POST" action="/MediQuick/SubmitTestResult">
@@ -37,7 +37,7 @@
 						<table >
 							<tr>
 								<td class="required" colspan=4>
-									<div class="bold">ORDERING PHYSICIAN/PHONE #</div> 
+									<div class="bold">ORDERING PHYSICIAN/ PHONE #</div> 
 									   Dr. <%= orderingPhysician.getDisplayName() %>
 								</td>
 								<td colspan=2 class="required">
@@ -46,8 +46,11 @@
 							</tr>
 							<tr>
 							<td class="required" colspan=6>
+                                <div>
                                     <span class="bold">ICD-9 Code:</span> 
-                                    <%= icd9.getCode() %>: <%= icd9.getDescription() %>
+                                    <%= icd9.getCode() %>
+                                </div>
+                                <%= icd9.getDescription() %>
                                 </td>
 							
 							</tr>
@@ -60,7 +63,7 @@
 							<tr>
 								<td colspan=6 class="required"><span class="bold">DATE
 										& TIME COLLECTED: </span> 
-                                    <%= labRequest.getSpecimen_collection_time()==null?"UNKNOWN":sdf.format(labRequest.getSpecimen_collection_time()) %>
+                                    <%= labRequest.getSpecimen_collection_time()==null?"UNKNOWN":sdfLong.format(labRequest.getSpecimen_collection_time()) %>
                                 </td>
 							</tr>
 							<tr>
@@ -75,13 +78,13 @@
 								</td>
 								<td colspan=4>
 									<div class="bold">START:</div> 
-									<%= labRequest.getUrine_collection_start()==null?"N/A" : sdf.format(labRequest.getUrine_collection_start()) %>
+									<%= labRequest.getUrine_collection_start()==null?"N/A" : sdfLong.format(labRequest.getUrine_collection_start()) %>
 								</td>
 							</tr>
 							<tr>
 								<td colspan="4">
 									<div class="bold">FINISH:</div> 
-                                    <%= labRequest.getUrine_collection_finish()==null?"N/A" : sdf.format(labRequest.getUrine_collection_finish()) %>
+                                    <%= labRequest.getUrine_collection_finish()==null?"N/A" : sdfLong.format(labRequest.getUrine_collection_finish()) %>
 
 								</td>
 
@@ -98,19 +101,15 @@
 								</td>
 							</tr>
 						</table>
-					    <button class="button" style="margin-top: 10px;" type='submit'> Save </button>
-						
 					</div>
 					<div style="float: right; width: 75%">
 					   <table>
                            <tr>
-                               <th>
-                                   Test (Abbrev)
-                               </th>
-                               <th>Test (Description)</th>
-                               <th>Results</th>
-                               <th>Comments</th>
-                               <th>Rejected</th>
+                               <td class="colheader">Test (Abbrev)</td>
+                               <td class="colheader">Test (Description)</td>
+                               <td class="colheader">Results</td>
+                               <td class="colheader">Comments</td>
+                               <td class="colheader">Rejected</td>
                            </tr>
 					
 					   <% for (LabRequestDetail detail: testDetails) { 
@@ -125,22 +124,30 @@
 					               <%= test.getName() %>
 					           </td>
 					           <td>
-					               <textarea name="results_test_<%= detail.getId() %>" cols=30 rows=3 ></textarea>
+					               <textarea name="results_test_<%= detail.getId() %>" cols=25 rows=3 ></textarea>
 					           </td>					   
 					           <td>
-					               <textarea name="comments_test_<%= detail.getId() %>" cols=30 rows=3 ></textarea>
+					               <textarea name="comments_test_<%= detail.getId() %>" cols=25 rows=3 ></textarea>
 					           </td>
-					           <td>
-					               <input type="checkbox" name="rejected_test_<%= detail.getId() %>" value="1" />
-					               Check this box to reject the test.<br/ >
+					           <td style="white-space: nowrap">
+					               
+					               <span class="bold">Reject Test?</span><br/ >
+					               <input type="radio" name="rejected_test_<%= detail.getId() %>" value="0" CHECKED /> No <br />
+					               <input type="radio" name="rejected_test_<%= detail.getId() %>" value="1" /> Yes
 					           </td>
 					       </tr>
 					
 					   <% }  %>
 					   </table>
-					   <cite>If a test is rejected for improper specimen, please include in the comments a description of the error.</cite>
+					   <div style="font-style: italic; text-align: center;">
+					       If a test is rejected for improper specimen, please include in the comments a description of the error.
+					   </div>
+                       <div>
+                            <button class="button" style="margin-top: 10px;" type='submit'> Submit Results </button>
+                       </div>
 					</div>
 					<div style="clear: both"></div>
+					
 				</div>
 			</form>
 

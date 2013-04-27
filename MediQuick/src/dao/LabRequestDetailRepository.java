@@ -207,8 +207,11 @@ public class LabRequestDetailRepository {
 		LabTest p1 = null;
 
         ResultSet result = null;
-        String sql = "SELECT * FROM lab_request_details where(lab_request_id = " + labRequestId + ")";
+        String sql = "SELECT lrd.* FROM lab_request_details lrd, lab_test lt " + 
+        			"	WHERE lab_request_id = " + labRequestId + " AND lt.id=lrd.lab_test_id " +
+        			"	ORDER BY lt.abbreviation";
 
+        
         try {
             result = DB.executeQuery(sql);
             while (result.next()) {
