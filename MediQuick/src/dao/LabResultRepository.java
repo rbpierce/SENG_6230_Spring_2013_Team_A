@@ -98,6 +98,7 @@ public class LabResultRepository {
 	
 	    if (this.getId() <= 0) {
 	        int maximumID = LabResultRepository.getMaxID();
+	        this.setId(maximumID);
 	        sql = sql.concat(maximumID + " ,");
 	    } else
 	        sql = sql.concat(this.getId() + " ,");

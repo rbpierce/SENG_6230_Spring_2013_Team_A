@@ -24,7 +24,6 @@
 </head>
 
 <body id="requestOrderTest">
-    <a href="/MediQuick/viewPendingLabRequests.jsp">Back to Pending Lab Requests</a>
 	<div id="container">
 	   <%= topLine.toString() %>
 		<teama:checkRole permission="PROCESS_LAB_REQUEST">
@@ -109,7 +108,6 @@
                                <td class="colheader">Test (Description)</td>
                                <td class="colheader">Results</td>
                                <td class="colheader">Comments</td>
-                               <td class="colheader">Rejected</td>
                            </tr>
 					
 					   <% for (LabRequestDetail detail: testDetails) { 
@@ -129,27 +127,38 @@
 					           <td>
 					               <textarea name="comments_test_<%= detail.getId() %>" cols=25 rows=3 ></textarea>
 					           </td>
-					           <td style="white-space: nowrap">
-					               
-					               <span class="bold">Reject Test?</span><br/ >
-					               <input type="radio" name="rejected_test_<%= detail.getId() %>" value="0" CHECKED /> No <br />
-					               <input type="radio" name="rejected_test_<%= detail.getId() %>" value="1" /> Yes
-					           </td>
 					       </tr>
 					
 					   <% }  %>
 					   </table>
-					   <div style="font-style: italic; text-align: center;">
-					       If a test is rejected for improper specimen, please include in the comments a description of the error.
-					   </div>
-                       <div>
+					   
+                       <div style="float: left">
                             <button class="button" style="margin-top: 10px;" type='submit'> Submit Results </button>
                        </div>
+                       <div style="float: right">    
+                            <button type='button' class='graybutton' style="margin-top: 10px;"
+                                onClick="document.location='/MediQuick/viewPendingLabRequests.jsp'">Back to Pending Lab Requests</button>
+                       </div>
+                       <div style="clear: both"></div>
 					</div>
+					
 					<div style="clear: both"></div>
 					
 				</div>
 			</form>
+
+            <div style="text-align: center; border: 1px solid darkblue; margin: 40px; padding: 10px; background-color: #dedede">
+                <h3>Reject Test</h3>
+                <div style="font-style: italic; text-align: center;">
+                   If a test is rejected for improper specimen, please include in the comments below a description of the error.
+                </div>
+               <form method="POST" action="/MediQuick/SubmitTestResult">
+	                <input type="hidden" name="patient_id" value="<%= patient.getId() %>" />
+	                <input type="hidden" name="lab_request_id" value="<%= labRequest.getId() %>" />
+                    <textarea name="details" cols=80 rows=3 ></textarea>
+	                <div style="padding-top: 10px;"><input type="submit" name="reject_test" class="button" value="Reject Test Request" /></div>
+	            </form>
+            </div>
 
 
 		</teama:checkRole>

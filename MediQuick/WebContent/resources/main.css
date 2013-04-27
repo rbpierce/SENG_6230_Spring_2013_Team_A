@@ -61,7 +61,7 @@ table {
 
 
 
-.button {
+.button,.graybutton {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     font-weight: bold;
@@ -85,16 +85,23 @@ table {
     cursor: pointer;
     min-width: 150px;
 }
+.graybutton { 
+	background: -moz-linear-gradient(top, #cccccc   0%, #666666);
+    background: -webkit-gradient(linear, left top, left bottom, from(#cccccc  ), to(#666666) );
+}
 
 .bold {
     font-weight: bold;
 }
 
-input[type='text'] { 
+input[type='text'], input[type='password'] { 
     padding: 3px;
     margin: 3px;	
 }
 
+textarea {
+	overflow: auto;
+}
 
 /* to do  td.required { background-image ... } */
 

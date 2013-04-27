@@ -26,7 +26,7 @@
 		<teama:checkRole permission="VIEW_SUMMARY_PATIENT_DEMOGRAPHICS,VIEW_COMPLETE_PATIENT_DEMOGRAPHICS">
 			<%= topLine %>
 
-			<%= message.isEmpty() ?"":"<h3>" + message + "</h3>" %>
+			<%= message.isEmpty() ?"":"<h3 style='text-align: center; color: darkblue; padding-bottom: 10px;'>" + message + "</h3>" %>
 			<div style="float: left; width: 50%;">
 			<form method="POST" action="/MediQuick/SavePatient">
 				<table class="width300 border">
@@ -166,7 +166,11 @@
 					       <% } %>
 					   </teama:checkRole>
 					   <teama:checkRole noPermission="PROCESS_LAB_REQUEST">
-					       <%= labRequest.getStatus() %></td>
+                           <%  LabResult result = LabResultRepository.getResultOfRequest(labRequest.getId()); %>
+					       <%= result==null ? labRequest.getStatus() : result.getCompletionStatus() %> 
+					       <%= result!=null ? sdf.format(result.getCompletionDate()) : "" %>
+					       
+				    </td>
 					   </teama:checkRole>
 				</tr>
 				<% } %>

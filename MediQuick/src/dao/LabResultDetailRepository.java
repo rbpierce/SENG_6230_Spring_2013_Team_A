@@ -1,9 +1,5 @@
 package dao;
 
-//import java.sql.Connection;
-//import java.sql.PreparedStatement;
-//import java.util.Iterator;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -64,45 +60,34 @@ public class LabResultDetailRepository {
     public LabResultDetailRepository() {
     }
 
-    public void deleteLab_resultDetails(LabResultDetailRepository objLab_resultDetails) {
-        String sql = "delete * FROM lab_resultDetails where (id = " + objLab_resultDetails.getId() + ")";
-        DB.executeQuery(sql);
 
-    }
-
-    public void deleteLab_resultDetails(int Id) {
-        String sql = "delete * FROM lab_resultDetails where (id = " + Id + ")";
-        DB.executeQuery(sql);
-
-    }
-
-    public void insertLab_resultDetails(LabResultDetailRepository objLab_resultDetails) {
+    public static void insertLab_resultDetails(LabResultDetailRepository objLab_resultDetails) {
         String sql = "";
-        sql = sql.concat(" insert into lab_resultDetails values");
+        sql = sql.concat(" insert into lab_result_details (id, lab_result_id, lab_test_id, result, details) values (0, ");
 
         sql = sql.concat(objLab_resultDetails.getLab_resultId() + " ,");
         sql = sql.concat(objLab_resultDetails.getLabTestId() + " ,");
-        sql = sql.concat("'" + objLab_resultDetails.getResult() + "'") + " ,";
-        sql = sql.concat("'" + objLab_resultDetails.getDetails() + "'") + " ,";
+        sql = sql.concat("\"" + objLab_resultDetails.getResult() + "\"") + " ,";
+        sql = sql.concat("\"" + objLab_resultDetails.getDetails() + "\"") + " ,";
         // quit the last ,
         sql = sql.substring(0, sql.length() - 1);
         sql = sql.concat(" )");
-        DB.executeQuery(sql);
+        DB.executeUpdate(sql);
 
     }
 
     public static void updateLab_resultDetails(LabResultDetailRepository objLab_resultDetails) {
         String sql = "";
-        sql = sql.concat(" update lab_resultDetails set ");
+        sql = sql.concat(" update lab_result_details set ");
 
-        sql = sql.concat("Lab_resultId=" + objLab_resultDetails.getLab_resultId() + " ,");
-        sql = sql.concat("LabTestId=" + objLab_resultDetails.getLabTestId() + " ,");
-        sql = sql.concat("Result= '" + objLab_resultDetails.getResult()) + "' ,";
-        sql = sql.concat("Details= '" + objLab_resultDetails.getDetails()) + "' ,";
+        sql = sql.concat(" lab_result_id=" + objLab_resultDetails.getLab_resultId() + " ,");
+        sql = sql.concat(" lab_test_id=" + objLab_resultDetails.getLabTestId() + " ,");
+        sql = sql.concat(" result= \"" + objLab_resultDetails.getResult()) + "\" ,";
+        sql = sql.concat(" details= \"" + objLab_resultDetails.getDetails()) + "\" ,";
         // quit the last ,
         sql = sql.substring(0, sql.length() - 1);
         sql = sql.concat(" where id=" + objLab_resultDetails.getId());
-        DB.executeQuery(sql);
+        DB.executeUpdate(sql);
 
     }
 
@@ -112,7 +97,7 @@ public class LabResultDetailRepository {
         LabResultDetailRepository p1 = null;
 
         ResultSet result = null;
-        String sql = "SELECT * FROM lab_resultDetails ";
+        String sql = "SELECT * from lab_result_details ";
 
         try {
 
@@ -163,9 +148,7 @@ public class LabResultDetailRepository {
                 return null;
             }
         } catch (SQLException e) {
-            System.out.println("Error Sql: " + e.getMessage());
-            System.out.println("SQLState: " + e.getSQLState());
-            System.out.println("ErrorCode: " + e.getErrorCode());
+            e.printStackTrace();
         } finally {
         }
 

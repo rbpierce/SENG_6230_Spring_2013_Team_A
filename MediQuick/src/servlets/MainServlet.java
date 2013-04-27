@@ -47,7 +47,7 @@ public class MainServlet extends HttpServlet {
                 if (person != null) {
                     session.setAttribute("person", person);
                 } else {// if not found, return to main.jsp with error
-                    request.setAttribute("Error", "LoginError");
+                    request.setAttribute("Error", "The UserName and Password combination returned no result; Please try again!");
                     forward =  "index.jsp";
                 }
 
