@@ -36,18 +36,6 @@ public class LabTechnicianRepository {
     public LabTechnicianRepository() {
     }
 
-    public void deleteLab_technician(LabTechnicianRepository objLab_technician) {
-        String sql = "delete * FROM lab_technician where (person_d = " + objLab_technician.getPersonId() + ")";
-        DB.executeQuery(sql);
-
-    }
-
-    public void deleteLab_technician(int PersonId) {
-        String sql = "delete * FROM lab_technician where (person_id = " + PersonId + ")";
-        DB.executeQuery(sql);
-
-    }
-
     public void insertLab_technician(LabTechnicianRepository objLab_technician) {
         String sql = "";
         sql = sql.concat(" insert into lab_technician values");
@@ -114,7 +102,7 @@ public class LabTechnicianRepository {
             if (result.next()) {
                 p1 = new Technician();
 
-                p1.setPersonId(result.getInt("person_d"));
+                p1.setPersonId(result.getInt("person_id"));
 
                 p1.setHourly_rate(result.getFloat("hourly_rate"));
 
