@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import domain.LabResultDetail;
+
 public class LabResultDetailRepository {
 
     private int Id;
@@ -119,13 +121,45 @@ public class LabResultDetailRepository {
 
             }
         } catch (Exception e) {
-            System.out.println("Error Sql: " + e.getMessage());
+            e.printStackTrace();
         } finally {
         }
 
         return Lab_resultDetailsList;
     }
 
+    public static List<LabResultDetail> getList(int labResultId) {
+
+        final List<LabResultDetail> details = new ArrayList<LabResultDetail>();
+        LabResultDetail p1 = null;
+
+        ResultSet result = null;
+        String sql = "SELECT * from lab_result_details where lab_result_id=" + labResultId;
+
+        try {
+
+            result = DB.executeQuery(sql);
+
+            while (result.next()) {
+                p1 = new LabResultDetail();
+
+                p1.setId(result.getInt("id"));
+                p1.setLab_resultId(result.getInt("lab_result_id"));
+                p1.setLabTestId(result.getInt("lab_test_id"));
+                p1.setResult(result.getString("result"));
+                p1.setDetails(result.getString("details"));
+                details.add(p1);
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+
+        return details;
+    }
+    
+    
     public static LabResultDetailRepository getLab_resultDetails(int Id) {
 
         LabResultDetailRepository p1 = null;

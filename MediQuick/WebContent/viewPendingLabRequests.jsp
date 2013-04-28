@@ -27,6 +27,7 @@
                 <td class="colheader">Ordering Physician</td>
                 <td class="colheader">Date Ordered</td>
                 <td class="colheader">Specimen</td>
+                <td class="colheader">Request</td>
                 <td class="colheader"></td>
 			</tr>
 
@@ -37,6 +38,11 @@
 				<td>Dr. <%= PhysicianRepository.getById(labRequest.getOrderingPhysicianId()).getDisplayName() %></td>
 				<td><%= sdf.format(labRequest.getOrderPlaced()) %></td>
 				<td><%= labRequest.getSpecimen_type() %> (# <%= labRequest.getSpecimen_number() %>)</td>
+				<td>
+                   <a href="/MediQuick/PrintTestRequestPDF?id=<%= labRequest.getId() %>" style="text-decoration: none; ">
+                        <img src="/MediQuick/resources/pdf_icon.png" border=0 alt="Download PDF" /><br />View Request
+                   </a>
+                </td>
 				<td><a href="/MediQuick/processRequest.jsp?lab_request_id=<%= labRequest.getId() %>">Update Results</a></td>
 				</td>
 			</tr>

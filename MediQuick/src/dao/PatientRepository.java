@@ -80,16 +80,17 @@ public class PatientRepository extends PersonRepository {
     public void insert(PatientRepository objPatient) throws Exception {
     	if (objPatient.getPersonId()<=0) throw new Exception("Create person first!");
         String sql = "";
-        sql = sql.concat(" insert into patient values");
+        sql = sql.concat(" insert into patient values ");
         sql = sql.concat(" (" + objPatient.getPersonId() + ", ");
         sql = sql.concat(objPatient.getLastVisit()==null?"NULL,": ("'" + objPatient.getLastVisit() + "'") + " , ");
-        sql = sql.concat(objPatient.getNextScheduledVisit()==null?"NULL,": ("'" + objPatient.getNextScheduledVisit() + "'") + " , ");
-        sql = sql.concat(objPatient.getHeightInInches() + " ,");
-        sql = sql.concat(objPatient.getWeightInPounds() + " ,");
+        sql = sql.concat(objPatient.getNextScheduledVisit()==null?"NULL,": ("'" + objPatient.getNextScheduledVisit() + "'") + " , '");
+        sql = sql.concat(objPatient.getHeightInInches() + "' ,'");
+        sql = sql.concat(objPatient.getWeightInPounds() + "' ,");
         sql = sql.concat(objPatient.getTobaccoStatus()==null?"\"UNKNOWN\",": ("'" + objPatient.getTobaccoStatus() + "'") + " , ");
         // quit the last ,
         sql = sql.substring(0, sql.length() - 1);
         sql = sql.concat(" )");
+        System.out.println(sql);
         DB.executeUpdate(sql);
 
     }
@@ -162,7 +163,7 @@ public class PatientRepository extends PersonRepository {
                 p1.addPersonInfo();
 
             } else {
-                System.out.println("No Results Found!");
+                System.out.println("No Results Found!" + sql);
                 return null;
             }
         } catch (SQLException e) {

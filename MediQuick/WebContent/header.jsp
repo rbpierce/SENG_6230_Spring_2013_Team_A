@@ -5,6 +5,8 @@
 domain.Person person = (Person) session.getAttribute("person");
 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 SimpleDateFormat sdfLong = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+SimpleDateFormat sdfSQL = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 
 if (person==null) {
     System.out.println("No person in session- session expired or illegal access");

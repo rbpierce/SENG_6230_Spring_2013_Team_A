@@ -36,8 +36,10 @@
 					</tr>
 					<tr>
 						<td class="label">ID:</td>
-						<td><%= patient.getId() %> <input type="hidden"
-							name="patient_id" value="<%= patient.getId() %>" /></td>
+						<td>
+						  <a href="/MediQuick/viewPatient.jsp?id=<%= patient.getId() %>"><%= patient.getId() %></a>
+						  <input type="hidden" name="patient_id" value="<%= patient.getId() %>" />
+						</td>
 					</tr>
 					<tr>
 						<td class="label">First Name:</td>
@@ -53,7 +55,8 @@
 						<td><teama:checkRole permission="EDIT_PATIENT_DEMOGRAPHICS">
 								<input type="text" name="middle_name"
 									value="<%= patient.getMiddleName()==null?"":patient.getMiddleName() %>" />
-							</teama:checkRole> <teama:checkRole noPermission="EDIT_PATIENT_DEMOGRAPHICS">
+							</teama:checkRole> 
+							<teama:checkRole noPermission="EDIT_PATIENT_DEMOGRAPHICS">
 								<%= patient.getMiddleName()==null?"":patient.getMiddleName() %>
 							</teama:checkRole></td>
 					</tr>
@@ -146,32 +149,46 @@
 					<% }  %>
 				</div>
 			</teama:checkRole>
-			<table class="width300">
+			<table>
 				<tr>
 					<td class="colheader">Test Ordered</td>
 					<td class="colheader">Test Type</td>
+					<td class="colheader">Request</td>
 					<td class="colheader">Status</td>
+					<td class="colheader">Results</td>
 				</tr>
-				<% for (LabRequest labRequest : LabRequest.getTestsForPatient(patientId)) { %>
+				<% for (LabRequest labRequest : LabRequest.getTestsForPatient(patientId)) { 
+					 ArrayList<LabResult> results = LabResultRepository.getAllResultsOfRequest(labRequest.getId()); 
+				%>
 				<tr>
 					<td><%= labRequest.getOrderPlaced()==null ? "Pending Approval" : sdf.format(labRequest.getOrderPlaced()) %>
 					</td>
 					<td><%= labRequest.getSpecimen_type() %></td>
 					<td>
-					   <teama:checkRole permission="PROCESS_LAB_REQUEST">
-					       <% if (labRequest.getStatus().equals("Unseen")) { %>
-					       <a href="/MediQuick/processRequest.jsp?lab_request_id=<%= labRequest.getId() %>">Process Request</a>
-					       <% } else { %>
-					           <%= labRequest.getStatus() %>
-					       <% } %>
-					   </teama:checkRole>
-					   <teama:checkRole noPermission="PROCESS_LAB_REQUEST">
-                           <%  LabResult result = LabResultRepository.getResultOfRequest(labRequest.getId()); %>
-					       <%= result==null ? labRequest.getStatus() : result.getCompletionStatus() %> 
-					       <%= result!=null ? sdf.format(result.getCompletionDate()) : "" %>
-					       
+					   <a href="/MediQuick/PrintTestRequestPDF?id=<%= labRequest.getId() %>" style="text-decoration: none; ">
+                            <img src="/MediQuick/resources/pdf_icon.png" border=0 alt="Download PDF" /><br />View Request
+                       </a>
+					</td>
+					<td>
+					   <% if (labRequest.getStatus().equals("Unseen")) { %>
+		                       <teama:checkRole permission="PROCESS_LAB_REQUEST">
+							       <a href="/MediQuick/processRequest.jsp?lab_request_id=<%= labRequest.getId() %>">Process Request</a>
+		                       </teama:checkRole>
+					   <% } else {  %>
+		                       <%= labRequest.getStatus() %>
+				       <% } %>				       
 				    </td>
-					   </teama:checkRole>
+				    <td style="white-space: nowrap">
+				        <% if (results.size()==0) { %>
+				         None on file
+				         <% } else for (LabResult result : results) { %>
+				            <div>
+                                <a href="/MediQuick/viewResult.jsp?id=<%= result.getId() %>">
+				                    <%= Util.humancase(result.getCompletionStatus()) %> - <%= sdf.format(sdfSQL.parse(result.getCompletionDate())) %>
+				                </a>
+				            </div>
+				         <% } %>
+				    </td>
 				</tr>
 				<% } %>
 

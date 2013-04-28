@@ -1,16 +1,18 @@
 <%@ page import="domain.*, dao.*, java.util.*, java.text.SimpleDateFormat" language="java"
 	contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
-<% request.setAttribute("title", "Process Pending Lab Request"); %>
+<% request.setAttribute("title", "View Lab Results"); %>
 <%@ include file="/header.jsp"%>
 
 <%
-    int labRequestId = request.getParameter("lab_request_id")==null? -1 : Integer.parseInt(request.getParameter("lab_request_id"));
-    if (labRequestId<=0) throw new Exception("Illegal access: Lab Request id must be passed");
-    LabRequest labRequest = LabRequestRepository.getById(labRequestId);
+    int labResultId = request.getParameter("id")==null? -1 : Integer.parseInt(request.getParameter("id"));
+    if (labResultId<=0) throw new Exception("Illegal access: Lab Result id must be passed");
+    LabResult labResult = LabResultRepository.getById(labResultId);
+    LabRequest labRequest = LabRequestRepository.getById(labResult.getLabRequestId());
     Patient patient = PatientRepository.getById(labRequest.getPatientId()).getPatient();
     Physician orderingPhysician = PhysicianRepository.getById(labRequest.getOrderingPhysicianId()).getPhysician();
     ICD9Code icd9 = ICD9CodeRepository.getICD9Code(labRequest.getICD9CodeId());
-    ArrayList<LabRequestDetail> testDetails = LabRequestDetailRepository.getAll(labRequest.getId());
+    //ArrayList<LabRequestDetail> testDetails = LabRequestDetailRepository.getAll(labRequest.getId());
+    ArrayList<LabResultDetail> resultDetails = new ArrayList<LabResultDetail>(LabResultDetailRepository.getList(labResultId));
     
 %>
 
@@ -26,16 +28,13 @@
 <body id="requestOrderTest">
 	<div id="container">
 	   <%= topLine.toString() %>
-		<teama:checkRole permission="PROCESS_LAB_REQUEST">
+		<teama:checkRole permission="VIEW_PROCESSED_LAB_RESULTS">
 
 			<form method="POST" action="/MediQuick/SubmitTestResult">
 			    <input type="hidden" name="patient_id" value="<%= patient.getId() %>" />
 			    <input type="hidden" name="lab_request_id" value="<%= labRequest.getId() %>" />
 				<div>
 					<div style="float: left; width: 20%">
-					   <a href="/MediQuick/PrintTestRequestPDF?id=<%= labRequest.getId() %>" style="text-decoration: none; ">
-                            <img src="/MediQuick/resources/pdf_icon.png" border=0 alt="Download PDF" /><br />View Request
-                       </a>
 						<table >
 							<tr>
 								<td class="required" colspan=4>
@@ -105,6 +104,27 @@
 						</table>
 					</div>
 					<div style="float: right; width: 75%">
+					   <table style="padding-bottom: 30px; float: left">
+					       <tr>
+					           <td class="bold noborder">Status:</td>
+					           <td class="noborder"><%= Util.humancase( labResult.getCompletionStatus() ) %></td>
+					       </tr>
+					       <tr>
+                               <td class="bold noborder">Completed On:</td>
+                               <td class="noborder"><%
+                                      try { out.print(sdf.format(sdfSQL.parse(labResult.getCompletionDate()))); } catch (Exception e) { out.print(" -- "); } %>
+                               </td>
+                           </tr>
+                           <tr>
+                               <td class="bold noborder">Completed By:</td>
+                               <td class="noborder"><%= PersonRepository.getById(labResult.getProcessedByTechnicianId()).getDisplayName() %></td>
+                           </tr>
+                           <tr>
+                               <td class="bold noborder">Comments:</td>
+                               <td class="noborder"><%= labResult.getCompletionStatusDetails()==null?"&nbsp;":labResult.getCompletionStatusDetails()%></td>
+                           </tr>
+                       </table>
+					
 					   <table>
                            <tr>
                                <td class="colheader">Test (Abbrev)</td>
@@ -113,7 +133,7 @@
                                <td class="colheader">Comments</td>
                            </tr>
 					
-					   <% for (LabRequestDetail detail: testDetails) { 
+					   <% for (LabResultDetail detail: resultDetails) { 
 						    LabTest test = LabTestRepository.getLabTest(detail.getLabTestId());
 					   
 					   %>
@@ -125,22 +145,26 @@
 					               <%= test.getName() %>
 					           </td>
 					           <td>
-					               <textarea name="results_test_<%= detail.getId() %>" cols=25 rows=3 ></textarea>
+					               <%= detail.getResult() %>
 					           </td>					   
 					           <td>
-					               <textarea name="comments_test_<%= detail.getId() %>" cols=25 rows=3 ></textarea>
+					               <%= detail.getDetails() %>
 					           </td>
 					       </tr>
 					
 					   <% }  %>
 					   </table>
-					   
-                       <div style="float: left">
-                            <button class="button" style="margin-top: 10px;" type='submit'> Submit Results </button>
-                       </div>
-                       <div style="float: right">    
+
+                       <div style="float: left; padding-top: 10px;">    
                             <button type='button' class='graybutton' style="margin-top: 10px;"
-                                onClick="document.location='/MediQuick/viewPendingLabRequests.jsp'">Back to Pending Lab Requests</button>
+                                onClick="document.location='/MediQuick/viewPatient.jsp?id=<%= patient.getId() %>'">Back to View Patient</button>
+                       </div>
+                       <div style="float:right; padding-right: 30px; padding-top: 10px;">
+                            <div class="bold" style="text-align: center;">
+                                <a href="/MediQuick/PrintTestRequestPDF?id=<%= labRequest.getId() %>" style="text-decoration: none; ">
+                                    <img src="/MediQuick/resources/pdf_icon.png" border=0 alt="Download PDF" /><br />View Request
+                                </a>
+                            </div>    
                        </div>
                        <div style="clear: both"></div>
 					</div>
@@ -150,23 +174,9 @@
 				</div>
 			</form>
 
-            <div style="text-align: center; border: 1px solid darkblue; margin: 40px; padding: 10px; background-color: #dedede">
-                <h3>Reject Test</h3>
-                <div style="font-style: italic; text-align: center;">
-                   If a test is rejected for improper specimen, please include in the comments below a description of the error.
-                </div>
-               <form method="POST" action="/MediQuick/SubmitTestResult">
-	                <input type="hidden" name="patient_id" value="<%= patient.getId() %>" />
-	                <input type="hidden" name="lab_request_id" value="<%= labRequest.getId() %>" />
-                    <textarea name="details" cols=80 rows=3 ></textarea>
-	                <div style="padding-top: 10px;"><input type="submit" name="reject_test" class="button" value="Reject Test Request" /></div>
-	            </form>
-            </div>
-
-
 		</teama:checkRole>
 
-		<teama:checkRole noPermission="PROCESS_LAB_REQUEST">
+		<teama:checkRole noPermission="VIEW_PROCESSED_LAB_RESULTS">
        YOU DO NOT HAVE PERMISSION TO VIEW THIS PAGE 
     </teama:checkRole>
 	</div>

@@ -247,6 +247,28 @@ public class LabResultRepository {
 
 	}
 
+	
+	public static ArrayList<LabResult> getAllResultsOfRequest(int requestID) {
+		ArrayList<LabResult> results = new ArrayList<LabResult>();
+		String sql = "SELECT * FROM lab_result WHERE(lab_request_id=" + requestID + ") order by completion_date";
+		ResultSet result = DB.executeQuery(sql);
+		try {
+			while(result.next()) {
+				LabResult p1 = new LabResult();
+                p1.setId(result.getInt("id"));
+                p1.setLabRequestId(result.getInt("lab_request_id"));
+                p1.setProcessedByTechnicianId(result.getInt("processed_by_technician_id"));
+                p1.setCompletionStatus(result.getString("completion_status"));
+                p1.setCompletionStatusDetails(result.getString("completion_status_details"));
+                p1.setCompletionDate(result.getString("completion_date"));
+                results.add(p1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return results;
+	}
+	
 	public static ArrayList<LabResultDetail> getDetails(int resultID) {
 		LabResultDetail p1 = null;
 		ArrayList<LabResultDetail> LRD = new ArrayList<LabResultDetail>();;

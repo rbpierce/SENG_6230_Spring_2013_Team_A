@@ -93,7 +93,9 @@ table {
 .bold {
     font-weight: bold;
 }
-
+.noborder { 
+    border: none !important;
+}
 input[type='text'], input[type='password'] { 
     padding: 3px;
     margin: 3px;	

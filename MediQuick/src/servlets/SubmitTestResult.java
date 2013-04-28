@@ -67,8 +67,10 @@ public class SubmitTestResult extends HttpServlet {
 	        		resultDetail.setLab_resultId(labResult.getId());
 	        		LabResultDetailRepository.insertLab_resultDetails(resultDetail);
 	        	}
+	        	LabRequestRepository.updateStatus(labRequest.getId(), "Processed");
 	        	forwardPage += "&msg=Lab Results Updated!";
         	} else { 
+        		LabRequestRepository.updateStatus(labRequest.getId(), "Denied");
 	        	forwardPage += "&msg=Lab Request Rejected!";
         	}
 

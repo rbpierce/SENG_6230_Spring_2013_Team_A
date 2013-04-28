@@ -1,5 +1,6 @@
 <%@ page import="domain.*, dao.*, java.util.*" language="java"
 	contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<% request.setAttribute("title", "Order Test"); %>
 <%@ include file="/header.jsp"%>
 
 <%
@@ -21,135 +22,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title><%=person.isNurse() ? "Request" : "Order"%> Test</title>
     <link type="text/css" rel="stylesheet" href="/MediQuick/resources/main.css" />
-<%--
-<style>
-body {
-	text-align: center;
-	background-color: #dedede;
-	margin: 0px;
-}
-
-#container {
-	width: 1000px;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: left;
-	background-color: #ffffff;
-	padding: 20px;
-	border-left: 1px solid #000000;
-	border-right: 1px solid #000000;
-	border-bottom: 1px solid #000000;
-}
-
-h3,h4 {
-	margin-top: 0px;
-	padding-top: 0px;
-}
-
-.width300 {
-	width: 300px;
-}
-
-td {
-	vertical-align: top;
-	padding: 3px;
-}
-
-td.label {
-	font-weight: bold;
-	text-align: right;
-}
-
-th {
-	background-color: #cccccc;
-	border-bottom: 1px solid #000000;
-	padding: 0px;
-}
-
-table {
-	padding: 0px;
-	margin: 0px;
-	border-spacing: 0;
-	border-collapse: collapse;
-}
-
-table.border {
-	border: 1px solid #000000;
-	overflow: auto;
-}
-
-.button {
-	font-family: Arial, Helvetica, sans-serif;
-	font-size: 14px;
-	color: #ffffff;
-	padding: 10px 20px;
-	background: -moz-linear-gradient(top, #a3a3a3 0%, #3b3b3b 50%, #242424 50%, #000000);
-	background: -webkit-gradient(linear, left top, left bottom, from(#a3a3a3),
-		color-stop(0.50, #3b3b3b), color-stop(0.50, #242424), to(#000000) );
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-	border: 1px solid #000000;
-	-moz-box-shadow: 0px 1px 3px rgba(000, 000, 000, 0.5), inset 0px 0px 1px
-		rgba(255, 255, 255, 0.6);
-	-webkit-box-shadow: 0px 1px 3px rgba(000, 000, 000, 0.5), inset 0px 0px
-		1px rgba(255, 255, 255, 0.6);
-	box-shadow: 0px 1px 3px rgba(000, 000, 000, 0.5), inset 0px 0px 1px
-		rgba(255, 255, 255, 0.6);
-	text-shadow: 0px -1px 0px rgba(000, 000, 000, 1), 0px 1px 0px
-		rgba(255, 255, 255, 0.2);
-	text-decoration: none;
-	cursor: pointer;
-}
-
-.bold {
-	font-weight: bold;
-}
-/* to do  td.required { background-image ... } */
-
-/* Styles specific to requestOrderTest.jsp */
-#requestOrderTest td {
-	border: 1px solid #000000;
-}
-
-#requestOrderTest input[type=text] {
-	width: 80px;
-}
-
-#requestOrderTest #specimen_types td {
-	border: 0px;
-	white-space: nowrap;
-	padding: 0;
-	margin: 0;
-}
-
-#requestOrderTest div.quarter {
-	width: 22%;
-	float: left;
-	padding-left: 20px;
-}
-
-#requestOrderTest div.quarter td {
-	padding: none;
-	border: none;
-}
-
-#requestOrderTest {
-	font-size: 10px;
-}
-
-#requestOrderTest #specimen_types {
-	white-space: nowrap;
-}
-</style>
---%>
-
 </head>
 <body id="requestOrderTest">
-    <a href="/viewPatient.jsp?id=<%= patientId %>">Back to <%= patient.getDisplayName() %></a>
+    
 	<div id="container">
 		<teama:checkRole permission="ORDER_TESTS,REQUEST_TESTS">
-
+            <%= topLine %>
 			<form method="POST" action="/MediQuick/SubmitTestRequest">
 			    <input type="hidden" name="patient_id" value="<%= patientId %>" />
 				<div>
@@ -245,9 +123,13 @@ table.border {
 							</tr>
 						</table>
 						<center>
-							<button href="#" class="button" style="margin-top: 10px;"
+							<button class="button" style="margin-top: 10px; min-width: 100px;"
 								type="submit">Submit Order</button>
+						    <button class="graybutton" style="margin-top: 10px; min-width: 100px;"" 
+						          onClick="document.location='/MediQuick/viewPatient.jsp?id=<%= patientId %>'"
+                                    type="button">Cancel</button>  								
 						</center>
+						
 					</div>
 					<div class="quarter">
 						<table>
