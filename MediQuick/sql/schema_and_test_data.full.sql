@@ -3,7 +3,7 @@
 -- Server version:               5.6.10-log - MySQL Community Server (GPL)
 -- Server OS:                    Win32
 -- HeidiSQL version:             7.0.0.4053
--- Date/time:                    2013-04-27 19:22:11
+-- Date/time:                    2013-04-28 13:40:04
 -- --------------------------------------------------------
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS `icd9_code` (
   KEY `icd9_code__code` (`code`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17751 DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.icd9_code: ~16,341 rows (approximately)
+-- Dumping data for table mediquik_team_a.icd9_code: ~16,606 rows (approximately)
 DELETE FROM `icd9_code`;
 /*!40000 ALTER TABLE `icd9_code` DISABLE KEYS */;
 INSERT INTO `icd9_code` (`id`, `code`, `description`) VALUES
@@ -16671,7 +16671,7 @@ CREATE TABLE IF NOT EXISTS `laboratory` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.laboratory: ~0 rows (approximately)
+-- Dumping data for table mediquik_team_a.laboratory: ~1 rows (approximately)
 DELETE FROM `laboratory`;
 /*!40000 ALTER TABLE `laboratory` DISABLE KEYS */;
 INSERT INTO `laboratory` (`id`, `name`, `phone_number`, `street1`, `street2`, `city`, `state_code`, `zipcode`, `zipcode_plus4`) VALUES
@@ -16739,7 +16739,8 @@ INSERT INTO `lab_request` (`id`, `laboratory_id`, `patient_id`, `requesting_nurs
 	(22, 1, 1, 2, NULL, 4, '2013-04-19 23:58:56', 'Whole Blood', NULL, NULL, NULL, NULL, 0, 0, 1, 'Unseen'),
 	(23, 1, 1, 2, NULL, 4, '2013-04-20 00:08:28', 'Whole Blood', NULL, NULL, NULL, NULL, 0, 0, 1, 'Denied'),
 	(24, 1, 1, NULL, NULL, 5, '2013-04-25 21:28:00', 'Serum', '1900-01-01 01:00:00', '12345', '2000-02-02 02:02:00', '2003-03-03 03:03:00', 44, 55, 1, 'Unseen'),
-	(25, 1, 7, NULL, NULL, 5, '2013-04-25 22:07:00', 'Urine', '1900-01-01 01:00:00', '12345', '2000-02-02 02:02:00', '2003-03-03 03:03:00', 44, 55, 1, 'Unseen');
+	(25, 1, 7, NULL, NULL, 5, '2013-04-25 22:07:00', 'Stool', '1900-01-01 01:00:00', '12345', '2000-02-02 02:02:00', '2003-03-03 03:03:00', 44, 55, 1, 'Processed'),
+	(27, 1, 8, NULL, NULL, 5, '2013-04-27 20:06:00', 'Urine', '1900-01-01 00:00:00', 'SPEC123', NULL, NULL, 0, 0, 13856, 'Processed');
 /*!40000 ALTER TABLE `lab_request` ENABLE KEYS */;
 
 
@@ -16903,7 +16904,11 @@ INSERT INTO `lab_request_details` (`id`, `lab_request_id`, `lab_test_id`, `comme
 	(141, 25, 1, 'null'),
 	(142, 25, 2, 'null'),
 	(143, 25, 3, 'null'),
-	(144, 25, 4, 'null');
+	(144, 25, 4, 'null'),
+	(145, 27, 1, 'null'),
+	(146, 27, 2, 'null'),
+	(147, 27, 3, 'null'),
+	(148, 27, 4, 'null');
 /*!40000 ALTER TABLE `lab_request_details` ENABLE KEYS */;
 
 
@@ -16923,7 +16928,7 @@ CREATE TABLE IF NOT EXISTS `lab_result` (
   CONSTRAINT `fk_lab_result__lab_technician` FOREIGN KEY (`processed_by_technician_id`) REFERENCES `lab_technician` (`person_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.lab_result: ~17 rows (approximately)
+-- Dumping data for table mediquik_team_a.lab_result: ~19 rows (approximately)
 DELETE FROM `lab_result`;
 /*!40000 ALTER TABLE `lab_result` DISABLE KEYS */;
 INSERT INTO `lab_result` (`id`, `lab_request_id`, `processed_by_technician_id`, `completion_status`, `completion_status_details`, `completion_date`) VALUES
@@ -16945,7 +16950,16 @@ INSERT INTO `lab_result` (`id`, `lab_request_id`, `processed_by_technician_id`, 
 	(17, 4, 10, 'PROCESSED', NULL, '2013-04-27 19:17:00'),
 	(18, 24, 10, 'PROCESSED', NULL, '2013-04-27 19:17:00'),
 	(19, 24, 10, 'PROCESSED', NULL, '2013-04-27 19:17:00'),
-	(20, 24, 10, 'PROCESSED', NULL, '2013-04-27 19:18:00');
+	(20, 24, 10, 'PROCESSED', NULL, '2013-04-27 19:18:00'),
+	(21, 25, 10, 'PROCESSED', 'REJECT', '2013-04-27 19:57:00'),
+	(22, 22, 10, 'PROCESSED', NULL, '2013-04-27 20:09:00'),
+	(23, 25, 10, 'PROCESSED', 'REJECTED', '2013-04-27 20:10:00'),
+	(24, 27, 10, 'PROCESSED', NULL, '2013-04-27 21:30:00'),
+	(25, 27, 10, 'PROCESSED', NULL, '2013-04-27 21:40:00'),
+	(26, 27, 10, 'PROCESSED', NULL, '2013-04-27 21:44:00'),
+	(27, 27, 10, 'PROCESSED', NULL, '2013-04-27 21:44:00'),
+	(28, 27, 10, 'PROCESSED', NULL, '2013-04-27 21:46:00'),
+	(29, 25, 10, 'PROCESSED', NULL, '2013-04-27 21:51:00');
 /*!40000 ALTER TABLE `lab_result` ENABLE KEYS */;
 
 
@@ -17030,7 +17044,34 @@ INSERT INTO `lab_result_details` (`id`, `lab_result_id`, `lab_test_id`, `result`
 	(59, 19, 3, '3', '3'),
 	(60, 20, 1, '1', '1'),
 	(61, 20, 2, '2', '2'),
-	(62, 20, 3, '3', '3');
+	(62, 20, 3, '3', '3'),
+	(63, 22, 2, 'TEST', 'TEST'),
+	(64, 22, 7, 'ABC', 'CBA'),
+	(65, 22, 4, '123', '321'),
+	(66, 24, 1, '1', ''),
+	(67, 24, 2, '1', ''),
+	(68, 24, 3, '1', ''),
+	(69, 24, 4, '1', ''),
+	(70, 25, 1, '', ''),
+	(71, 25, 2, '', ''),
+	(72, 25, 3, '', ''),
+	(73, 25, 4, '', ''),
+	(74, 26, 1, '', ''),
+	(75, 26, 2, '', ''),
+	(76, 26, 3, '', ''),
+	(77, 26, 4, '', ''),
+	(78, 27, 1, '', ''),
+	(79, 27, 2, '', ''),
+	(80, 27, 3, '', ''),
+	(81, 27, 4, '', ''),
+	(82, 28, 1, '', ''),
+	(83, 28, 2, '', ''),
+	(84, 28, 3, '', ''),
+	(85, 28, 4, '', ''),
+	(86, 29, 1, '', ''),
+	(87, 29, 2, '', ''),
+	(88, 29, 3, '', ''),
+	(89, 29, 4, '', '');
 /*!40000 ALTER TABLE `lab_result_details` ENABLE KEYS */;
 
 
@@ -17043,7 +17084,7 @@ CREATE TABLE IF NOT EXISTS `lab_technician` (
   CONSTRAINT `fk_lab_technician__person` FOREIGN KEY (`person_id`) REFERENCES `person` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.lab_technician: ~0 rows (approximately)
+-- Dumping data for table mediquik_team_a.lab_technician: ~1 rows (approximately)
 DELETE FROM `lab_technician`;
 /*!40000 ALTER TABLE `lab_technician` DISABLE KEYS */;
 INSERT INTO `lab_technician` (`person_id`, `hourly_rate`) VALUES
@@ -17066,7 +17107,7 @@ CREATE TABLE IF NOT EXISTS `lab_technician_laboratory` (
   CONSTRAINT `fk_lab_technician_laboratory__person` FOREIGN KEY (`person_id`) REFERENCES `person` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.lab_technician_laboratory: ~0 rows (approximately)
+-- Dumping data for table mediquik_team_a.lab_technician_laboratory: ~1 rows (approximately)
 DELETE FROM `lab_technician_laboratory`;
 /*!40000 ALTER TABLE `lab_technician_laboratory` DISABLE KEYS */;
 INSERT INTO `lab_technician_laboratory` (`id`, `person_id`, `laboratory_id`, `hire_date`, `termination_date`) VALUES
@@ -17161,7 +17202,7 @@ CREATE TABLE IF NOT EXISTS `medical_practice` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.medical_practice: ~0 rows (approximately)
+-- Dumping data for table mediquik_team_a.medical_practice: ~1 rows (approximately)
 DELETE FROM `medical_practice`;
 /*!40000 ALTER TABLE `medical_practice` DISABLE KEYS */;
 INSERT INTO `medical_practice` (`id`, `name`, `phone_number`, `street1`, `street2`, `city`, `state_code`, `zipcode`, `zipcodeperson_plus4`) VALUES
@@ -17178,7 +17219,7 @@ CREATE TABLE IF NOT EXISTS `nurse` (
   CONSTRAINT `fk_nurse__person` FOREIGN KEY (`person_id`) REFERENCES `person` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- Dumping data for table mediquik_team_a.nurse: ~0 rows (approximately)
+-- Dumping data for table mediquik_team_a.nurse: ~1 rows (approximately)
 DELETE FROM `nurse`;
 /*!40000 ALTER TABLE `nurse` DISABLE KEYS */;
 INSERT INTO `nurse` (`person_id`, `hourly_rate`) VALUES
@@ -17223,9 +17264,10 @@ CREATE TABLE IF NOT EXISTS `patient` (
 DELETE FROM `patient`;
 /*!40000 ALTER TABLE `patient` DISABLE KEYS */;
 INSERT INTO `patient` (`person_id`, `last_visit`, `next_scheduled_visit`, `height_in_inches`, `weight_in_pounds`, `tobacco_status`) VALUES
-	(1, NULL, NULL, NULL, NULL, 'UNKNOWN'),
-	(7, NULL, NULL, NULL, NULL, 'UNKNOWN'),
-	(8, NULL, NULL, NULL, NULL, 'UNKNOWN');
+	(1, NULL, NULL, 60.00, 120, 'UNKNOWN'),
+	(7, NULL, NULL, 72.00, 180, 'UNKNOWN'),
+	(8, NULL, NULL, 68.00, 190, 'UNKNOWN'),
+	(12, NULL, NULL, 66.00, 150, 'UNKNOWN');
 /*!40000 ALTER TABLE `patient` ENABLE KEYS */;
 
 
@@ -17272,12 +17314,6 @@ CREATE TABLE IF NOT EXISTS `permission` (
 DELETE FROM `permission`;
 /*!40000 ALTER TABLE `permission` DISABLE KEYS */;
 INSERT INTO `permission` (`id`, `name`, `description`) VALUES
-	(1, 'doctor_appointment.jsp', 'Make a doctor appointment here'),
-	(3, 'admin_only.jsp', 'Admin\'s cofigs'),
-	(5, '/MediQuick/ViewPatientsServlet', 'See the list of your patients'),
-	(6, 'ViewTests.jsp', 'See the list of your tests'),
-	(7, '/MediQuick/ViewLabRequests', 'See the list of requests sent to this lab'),
-	(8, 'Nurse.jsp', 'Nurse Temporary'),
 	(9, 'SEARCH_PATIENTS', 'Can search for patients by name'),
 	(10, 'VIEW_SUMMARY_PATIENT_DEMOGRAPHICS', 'See abbreviated patient demographics'),
 	(11, 'VIEW_COMPLETE_PATIENT_DEMOGRAPHICS', 'See complete patient demographics'),
@@ -17285,7 +17321,8 @@ INSERT INTO `permission` (`id`, `name`, `description`) VALUES
 	(13, 'ORDER_TESTS', 'Can order tests'),
 	(14, 'REQUEST_TESTS', 'Can request a test which requires physician approval'),
 	(15, 'APPROVE_TEST_REQUEST', 'Can approve/deny a test request'),
-	(16, 'PROCESS_LAB_REQUEST', 'Add/Edit results on a lab request');
+	(16, 'PROCESS_LAB_REQUEST', 'Add/Edit results on a lab request'),
+	(17, 'VIEW_PROCESSED_LAB_RESULTS', 'Can see results of a completed test');
 /*!40000 ALTER TABLE `permission` ENABLE KEYS */;
 
 
@@ -17314,16 +17351,18 @@ CREATE TABLE IF NOT EXISTS `person` (
 DELETE FROM `person`;
 /*!40000 ALTER TABLE `person` DISABLE KEYS */;
 INSERT INTO `person` (`id`, `member_type`, `first_name`, `middle_name`, `last_name`, `maiden_name`, `suffix`, `gender`, `marital_status`, `birth_date`, `is_test`, `is_active`, `username`, `password_plaintext`, `is_password_reset_required`) VALUES
-	(1, 'PATIENT', 'John', NULL, 'Smith', '', '', 'MALE', 'SINGLE', NULL, 0, 1, 'john', 'smith', 0),
-	(2, 'NURSE', 'Jane', NULL, 'Smitha', '', '', 'FEMALE', 'SINGLE', NULL, 0, 1, 'jane', 'smitha', 0),
-	(3, 'ADMIN', 'Arman', NULL, 'Samavatian', '', '', 'MALE', 'SINGLE', NULL, 0, 1, 'arman', 'sam', 0),
-	(4, 'PHYSICIAN', 'Junhua', '', 'Ding', '', '', 'MALE', 'MARRIED', NULL, 0, 1, 'junhua', 'ding', 0),
-	(5, 'PHYSICIAN', 'Ozzy', NULL, 'Osbourne', '', '', 'MALE', 'MARRIED', NULL, 0, 1, 'ozzy', 'osbourne', 0),
-	(7, 'PATIENT', 'Maynard', NULL, 'Keenan', '', '', 'MALE', 'MARRIED', NULL, 0, 1, 'maynard', 'keenan', 0),
-	(8, 'PATIENT', 'John', NULL, 'Petrucci', '', '', 'MALE', 'MARRIED', NULL, 0, 1, 'john', 'petrucci', 0),
-	(9, 'PHYSICIAN', 'John', NULL, 'Myung', '', '', 'MALE', 'MARRIED', NULL, 0, 1, 'john', 'myung', 0),
-	(10, 'TECHNICIAN', 'Joe', '', 'Satriani', '', '', 'MALE', 'MARRIED', NULL, 0, 1, 'joe', 'satriani', 0),
-	(11, 'PHYSICIAN', 'Doctor', NULL, 'Mom', '', '', 'FEMALE', 'MARRIED', NULL, 1, 1, 'physician', 'test', 0);
+	(1, 'PATIENT', 'John', NULL, 'Smith', '', '', 'MALE', 'SINGLE', '1900-01-01', 0, 1, 'john', 'smith', 0),
+	(2, 'NURSE', 'Jane', NULL, 'Smitha', '', '', 'FEMALE', 'SINGLE', '1900-02-02', 0, 1, 'jane', 'smitha', 0),
+	(3, 'ADMIN', 'Arman', NULL, 'Samavatian', '', '', 'MALE', 'SINGLE', '1900-03-03', 0, 1, 'arman', 'sam', 0),
+	(4, 'PHYSICIAN', 'Junhua', '', 'Ding', '', '', 'MALE', 'MARRIED', '1900-04-04', 0, 1, 'junhua', 'ding', 0),
+	(5, 'PHYSICIAN', 'Ozzy', NULL, 'Osbourne', '', '', 'MALE', 'MARRIED', '1900-05-05', 0, 1, 'ozzy', 'osbourne', 0),
+	(7, 'PATIENT', 'Maynard', NULL, 'Keenan', '', '', 'MALE', 'MARRIED', '1900-07-07', 0, 1, 'maynard', 'keenan', 0),
+	(8, 'PATIENT', 'John', NULL, 'Petrucci', '', '', 'MALE', 'MARRIED', '1900-08-08', 0, 1, 'john', 'petrucci', 0),
+	(9, 'PHYSICIAN', 'John', NULL, 'Myung', '', '', 'MALE', 'MARRIED', '1900-09-09', 0, 1, 'john', 'myung', 0),
+	(10, 'TECHNICIAN', 'Joe', '', 'Satriani', '', '', 'MALE', 'MARRIED', '1900-10-10', 0, 1, 'joe', 'satriani', 0),
+	(11, 'PHYSICIAN', 'Doctor', NULL, 'Mom', '', '', 'FEMALE', 'MARRIED', '1900-11-11', 1, 1, 'physician', 'test', 0),
+	(12, 'PATIENT', 'John', 'null', 'Petrucci', '', '', 'MALE', 'MARRIED', '1900-01-01', 0, 1, 'john', 'petrucci', 0),
+	(13, 'PATIENT', 'John', 'null', 'Petrucci', '', '', 'MALE', 'MARRIED', '1900-01-01', 0, 1, 'john', 'petrucci', 0);
 /*!40000 ALTER TABLE `person` ENABLE KEYS */;
 
 
@@ -17439,29 +17478,28 @@ CREATE TABLE IF NOT EXISTS `role_permission` (
 DELETE FROM `role_permission`;
 /*!40000 ALTER TABLE `role_permission` DISABLE KEYS */;
 INSERT INTO `role_permission` (`id`, `role_id`, `permission_id`) VALUES
-	(1, 1, 1),
-	(8, 1, 6),
 	(11, 1, 11),
 	(16, 1, 12),
-	(10, 2, 8),
+	(24, 1, 17),
 	(2, 2, 9),
 	(12, 2, 11),
 	(17, 2, 12),
 	(20, 2, 14),
-	(9, 3, 7),
+	(25, 2, 17),
 	(3, 3, 9),
 	(13, 3, 10),
 	(23, 3, 16),
-	(6, 4, 5),
+	(28, 3, 17),
 	(4, 4, 9),
 	(14, 4, 11),
 	(18, 4, 12),
 	(21, 4, 13),
 	(22, 4, 15),
-	(5, 5, 3),
+	(27, 4, 17),
 	(7, 5, 9),
 	(15, 5, 11),
-	(19, 5, 12);
+	(19, 5, 12),
+	(26, 5, 17);
 /*!40000 ALTER TABLE `role_permission` ENABLE KEYS */;
 /*!40014 SET FOREIGN_KEY_CHECKS=1 */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
