@@ -225,7 +225,7 @@ public class PersonRepository {
         sql = sql.concat(objPerson.getUsername() + "\" ,\"");
         sql = sql.concat(objPerson.getPasswordPlaintext() + "\" ,");
         sql = sql.concat(String.valueOf(objPerson.getIsPasswordResetRequired())) + " )";
-
+System.out.println(sql);
         DB.executeUpdate(sql);
 
     }
@@ -248,24 +248,30 @@ public class PersonRepository {
         String sql = "";
         sql = sql.concat(" update Person set ");
 
-        sql = sql.concat("`member_type`=" + objPerson.getMemberType() + " ,");
-        sql = sql.concat("`first_name`=" + objPerson.getFirstName() + " ,");
-        sql = sql.concat("`middle_name`=" + objPerson.getMiddleName() + " ,");
-        sql = sql.concat("`last_name`=" + objPerson.getLastName() + " ,");
-        sql = sql.concat("`maiden_name`=" + objPerson.getMaidenName() + " ,");
-        sql = sql.concat("`suffix`=" + objPerson.getSuffix() + " ,");
-        sql = sql.concat("`gender`=" + objPerson.getGender() + " ,");
-        sql = sql.concat("`marital_status`=" + objPerson.getMaritalStatus() + " ,");
-        sql = sql.concat("`birth_date`=" + objPerson.getBirthDate() + " , ");
-        sql = sql.concat("`is_test`=" + objPerson.getIsTest()) + " ,";
-        sql = sql.concat("`is_active`=" + objPerson.getIsActive()) + " ,";
-        sql = sql.concat("`username`=" + objPerson.getUsername() + " ,");
-        sql = sql.concat("`password_plaintext`=" + objPerson.getPasswordPlaintext() + " ,");
-        sql = sql.concat("`is_password_reset_required`=" + objPerson.getIsPasswordResetRequired());
+        sql = sql.concat("`member_type`=\"" + nt(objPerson.getMemberType()) + "\" ,");
+        sql = sql.concat("`first_name`=\"" + nt(objPerson.getFirstName()) + "\" ,");
+        sql = sql.concat("`middle_name`=\"" + nt(objPerson.getMiddleName()) + "\" ,");
+        sql = sql.concat("`last_name`=\"" + nt(objPerson.getLastName()) + "\" ,");
+        sql = sql.concat("`maiden_name`=\"" + nt(objPerson.getMaidenName()) + "\" ,");
+        sql = sql.concat("`suffix`=\"" + nt(objPerson.getSuffix()) + "\" ,");
+        sql = sql.concat("`gender`=\"" + objPerson.getGender() + "\" ,");
+        sql = sql.concat("`marital_status`=\"" + nt(objPerson.getMaritalStatus()) + "\" ,");
+        sql = sql.concat("`birth_date`=\"" + objPerson.getBirthDate() + "\" , ");
+        sql = sql.concat("`is_test`=\"" + (objPerson.getIsTest()?1:0) + "\" ,");
+        sql = sql.concat("`is_active`=\"" + (objPerson.getIsActive()?1:0) + "\" ,");
+        sql = sql.concat("`username`=\"" + nt(objPerson.getUsername()) + "\" ,");
+        sql = sql.concat("`password_plaintext`=\"" + nt(objPerson.getPasswordPlaintext()) + "\" ,");
+        sql = sql.concat("`is_password_reset_required`=\"" + (objPerson.getIsPasswordResetRequired()?1:0) + "\" ");
         sql = sql.concat(" where `id`=" + objPerson.getId());
+        System.out.println(sql);
         DB.executeUpdate(sql);
 
     }
+	
+	private static String nt(String str) { 
+		if (str==null) return "";
+		else return str;
+	}
 
     public static ResultSet getList() {
         ResultSet result = null;

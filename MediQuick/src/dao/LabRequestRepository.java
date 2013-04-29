@@ -429,12 +429,14 @@ public class LabRequestRepository {
 
     public static ArrayList<LabRequest> getTestsForPatient(int patientId, Boolean completed) {
     	String sql = "";
-        if (completed==null) sql = "SELECT * FROM lab_request WHERE(patient_id=" + patientId + ")";
+        if (completed==null) sql = "SELECT req.* FROM lab_request req WHERE req.patient_id=" + patientId;
         else {
         	sql = 	"SELECT req.* FROM lab_request req left join lab_result res ON (req.id=res.lab_request_id) " + 
-        			"	WHERE patient_id=" + patientId + " AND res.id IS " + (completed?"NOT NULL":"NULL");
-        	
+        			"	WHERE patient_id=" + patientId;
+        	if (completed) sql += " AND (res.id IS NOT NULL OR req.status='Denied')";
+        	else sql += " AND res.id IS NULL";        	
         }
+        sql += " GROUP BY req.id ORDER BY order_placed";
         ArrayList<LabRequest> patientsLabTests = new ArrayList<LabRequest>();
 
         ResultSet result = DB.executeQuery(sql);
@@ -443,7 +445,8 @@ public class LabRequestRepository {
     }
     
 	public static ArrayList<LabRequest> getRequestsOfLab(int labID) {
-		String sql = "SELECT * FROM lab_request WHERE(laboratory_id=" + labID + ") AND status NOT IN ('WaitingForDoctor','Denied')";
+		String sql = "SELECT * FROM lab_request WHERE(laboratory_id=" + labID + ") " + 
+					" AND status NOT IN ('WaitingForDoctor','Denied') ORDER BY order_placed";
         ArrayList<LabRequest> requestsOfLab = new ArrayList<LabRequest>();
         ResultSet result = DB.executeQuery(sql);
         requestsOfLab = LabRequest.getAllFromResultSet(result);
@@ -451,7 +454,8 @@ public class LabRequestRepository {
 	}
 
 	public static ArrayList<LabRequest> getRequestsOfLab(int labID, String status) {
-		String sql = "SELECT * FROM lab_request WHERE(laboratory_id=" + labID + ") AND status IN (\"" + status + "\")";
+		String sql = "SELECT * FROM lab_request WHERE(laboratory_id=" + labID + ") " + 
+					" AND status IN (\"" + status + "\") ORDER BY order_placed";
         ArrayList<LabRequest> requestsOfLab = new ArrayList<LabRequest>();
         ResultSet result = DB.executeQuery(sql);
         requestsOfLab = LabRequest.getAllFromResultSet(result);
@@ -466,7 +470,9 @@ public class LabRequestRepository {
 	
 	public static ArrayList<LabRequest> getRequestsWaitingForDoctor(int personID) {
 		ArrayList<LabRequest> waitingForDoctor = new ArrayList<LabRequest>();
-		String sql = "SELECT * FROM lab_request WHERE (ordering_physician_id=" + personID + " AND status='WaitingForDoctor')";
+		String sql = "SELECT * FROM lab_request WHERE " + 
+					" ordering_physician_id=" + personID + " AND status='WaitingForDoctor'" + 
+					" ORDER BY order_placed";
         ResultSet result = DB.executeQuery(sql);
         waitingForDoctor = LabRequest.getAllFromResultSet(result);
 
@@ -476,7 +482,8 @@ public class LabRequestRepository {
 	public static ArrayList<LabRequest> getRequestsAwaitingResults(Physician physician) { 
 		ArrayList<LabRequest> requestAwaitingResults = new ArrayList<LabRequest>();
 		String sql = 	"SELECT * FROM lab_request req LEFT JOIN lab_result res ON req.id=res.lab_request_id" + 
-						"	WHERE req.ordering_physician_id=" + physician.getPersonId() + " AND res.id IS NULL";
+						"	WHERE req.ordering_physician_id=" + physician.getPersonId() + 
+						" AND status!='Denied' AND res.id IS NULL ORDER BY order_placed";
         ResultSet result = DB.executeQuery(sql);
         requestAwaitingResults = LabRequest.getAllFromResultSet(result);
 		return requestAwaitingResults;
@@ -486,7 +493,8 @@ public class LabRequestRepository {
 		if (nurse == null) return null;
 		ArrayList<LabRequest> requestAwaitingApproval = new ArrayList<LabRequest>();
 		String sql = 	"SELECT * FROM lab_request req" +
-						"	WHERE req.requesting_nurse_id=" + nurse.getId() + " AND ordering_physician_id IS NULL";
+						" WHERE req.requesting_nurse_id=" + nurse.getId() + " AND ordering_physician_id IS NULL" + 
+						" ORDER BY order_placed";
         ResultSet result = DB.executeQuery(sql);
         requestAwaitingApproval = LabRequest.getAllFromResultSet(result);
 		return requestAwaitingApproval;

@@ -40,8 +40,17 @@
      <teama:checkRole role="PATIENT">
         <h3>Welcome, <%= person.getDisplayName() %></h3>    
         <ul>
-            <li>You have <%= LabRequest.getTestsForPatient(person.getId(), Boolean.FALSE).size() %> pending lab requests which have been ordered for you</li>
-            <li>You have <%= LabRequest.getTestsForPatient(person.getId(), Boolean.TRUE).size() %> completed lab requests which have been ordered for you</li>
+            <li>You have <%= LabRequest.getTestsForPatient(person.getId(), Boolean.FALSE).size() %> 
+                pending lab request<%= LabRequest.getTestsForPatient(person.getId(), Boolean.TRUE).size()>1?"s":"" %> 
+                which have been ordered for you
+            </li>
+            <li>You have <%= LabRequest.getTestsForPatient(person.getId(), Boolean.TRUE).size() %> 
+                completed lab request <%= LabRequest.getTestsForPatient(person.getId(), Boolean.TRUE).size()>1?"s":"" %> 
+                whose results you may review 
+            </li>
+            <button type="button" onClick="document.location='/MediQuick/viewPatient.jsp'" class="button">
+                Review your account
+            </button>
         </ul>   
     </teama:checkRole>   
     

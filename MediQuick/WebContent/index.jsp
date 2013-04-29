@@ -5,6 +5,15 @@
   <head>
       <title>Welcome</title>
     <link type="text/css" rel="stylesheet" href="/MediQuick/resources/main.css" />
+    
+    <script>
+    function setUNPW(un, pw) {
+    	document.getElementById("j_username").value=un;
+    	document.getElementById("j_password").value=pw;
+    }
+    
+    </script>
+    
   </head>
 
 
@@ -25,11 +34,11 @@
 				<table border="1">
 				     <tr>
 				         <td class="colheader">User Name</td>
-				         <td><input type="text" name="j_username"></td>
+				         <td><input type="text" name="j_username" id="j_username"></td>
 				     </tr>
 				     <tr>
 				         <td class="colheader">Password</td>
-				         <td><input type="password" name="j_password"></td>
+				         <td><input type="password" name="j_password" id="j_password"></td>
 				     </tr>
 				</table>
 				<input type="submit" value="Login!" class="button" style="margin-top: 10px;">
@@ -38,7 +47,15 @@
 		
 		<p/>
 		<p/>
-		<!-- <button id="2" onClick="showhide('script', '2', 'Register', 'Do Not Register')">Register</button> -->
+		<div>
+		  <h3>Testing Accounts</h3>
+		  <div onClick="setUNPW('ozzy','osbourne')" style="text-decoration: underline; padding: 3px;">
+		      Physician: Ozzy Osbourne</div>
+		  <div onClick="setUNPW('joe','satriani')" style="text-decoration: underline; padding: 3px;">
+		      Lab Technician: Joe Satriani</div>
+		  <div onClick="setUNPW('john','petrucci')"style="text-decoration: underline; padding: 3px;">
+		      Patient: John Petrucci</div>	
+		</div>
 		</div>
 	</div>
   </body>

@@ -43,6 +43,7 @@ public class SavePatient extends HttpServlet {
     	
         try {
         	patient.setFirstName(request.getParameter("first_name"));
+        	patient.setMiddleName(request.getParameter("middle_name"));
         	patient.setLastName(request.getParameter("last_name"));
         	patient.setBirthDate(request.getParameter("date_of_birth")==null ? null : sdf.parse(request.getParameter("date_of_birth")));
         	patient.setGender(request.getParameter("gender"));
@@ -52,8 +53,13 @@ public class SavePatient extends HttpServlet {
         	int newId = PatientRepository.getMaxID()+1;
         	patient.setId(newId);
         	patient.setPersonId(newId);
-        	patient.insertPerson(patient);
-        	patient.insert(patient);
+        	if (isNewPatient) { 
+        		patient.insertPerson(patient);
+        		patient.insert(patient);
+        	} else { 
+        		PatientRepository.updatePerson(patient);
+        		PatientRepository.update(patient);        		
+        	}
         	forwardPage += patient.getId() + "&msg=" + (isNewPatient ? "New Patient saved!" : "Patient Updated");        	
         } catch (Exception e) {
             e.printStackTrace();
